@@ -59,6 +59,15 @@ Don't add these without the user asking first — they were deliberately cut:
 
 Clean, minimal, Clone Wars-themed, beautiful — in that priority order. Deep space-navy/gunmetal grounds, one desaturated accent color per widget instance, generous negative space around the quote text. At most one faction emblem, and only at the large widget size. Refresh transitions should be quick (sub-200ms) and subtle — a wipe or flicker, never a loading spinner.
 
+## Commit standards
+
+This repo enforces quality gates and a commit format via git hooks (husky) — see [PLANNING.md](PLANNING.md#quality-gates) for what each gate checks.
+
+- **Every commit message must follow [Conventional Commits](https://www.conventionalcommits.org/):** `type(scope): subject` — e.g. `feat(ios): add small widget layout`, `fix(corpus): correct season number for Rookies`, `docs: update PRD milestone table`. Common types: `feat`, `fix`, `docs`, `build`, `test`, `refactor`, `chore`. The commit-msg hook (commitlint) rejects anything else.
+- **Never bypass the hooks** (`--no-verify`) to force a commit through. If `npm run lint`, `npm test`, `npm run build`, or `npm run audit` fails, fix the underlying issue — a failing gate is real signal, not friction to route around. This matches the general git safety rule already in effect for this project.
+- **A failing `npm run audit`** (new dependency vulnerability) should be fixed by upgrading or overriding the vulnerable transitive dependency (see the `overrides` field in `package.json` for a precedent — `smol-toml` was force-upgraded this way rather than downgrading `markdownlint-cli2`), not by lowering `--audit-level` or skipping the check.
+- **If a task needs a test that doesn't exist yet, write the test first**, then make it pass — don't commit new corpus/tooling logic without corresponding coverage in `tests/`.
+
 ## Session summary
 
 **2026-09-09**
@@ -67,4 +76,6 @@ Clean, minimal, Clone Wars-themed, beautiful — in that priority order. Deep sp
 - Initialized this repo and pushed it to GitHub as a public repo: [AiraDeCastro/clone-wars-quotes](https://github.com/AiraDeCastro/clone-wars-quotes).
 - Generated this file (CLAUDE.md), [PLANNING.md](PLANNING.md), and [TASKS.md](TASKS.md) from the PRD, then added the session workflow rules above (read PLANNING.md every session, check/update TASKS.md continuously).
 - Started M1's quote-corpus task: created [corpus/quotes.json](corpus/quotes.json) with the schema and one verified seed entry, and [corpus/README.md](corpus/README.md) explaining why the remaining ~129 quotes weren't bulk-transcribed from memory (copyright + accuracy risk — see PRD §11) and how to fill them in properly. TASKS.md updated to reflect this: schema task checked off, transcription task left open with the blocker noted, and a new task added for sourcing the rest of the corpus from a legitimate transcript source.
-- Nothing has been committed to git for this session's corpus work yet — still local, pending review.
+- Set up the pre-commit quality pipeline: husky-managed `pre-commit` hook running markdown/corpus lint, the new corpus test suite ([tests/corpus.test.js](tests/corpus.test.js)), a corpus build/validation step ([scripts/validate-corpus.js](scripts/validate-corpus.js)), and `npm audit`; a `commit-msg` hook running commitlint to enforce Conventional Commits. Hit and fixed 2 high-severity vulnerabilities in the tooling's own dependencies (`smol-toml`, via a `package.json` override) before wiring the audit gate. Verified the hooks actually block a non-conventional commit message and pass a conventional one — this was committed as `build: add pre-commit quality gates and conventional commit enforcement` (commit `1dccdf6`).
+- Documented all of this in [PLANNING.md](PLANNING.md) (new Quality Gates section, Node.js added to Required Tools) and this file (new Commit standards section above), plus follow-on TASKS.md items for wiring native iOS/Android lint+build+test into the same hook once those projects are scaffolded.
+- The doc updates (PLANNING.md, TASKS.md, this file) made after that commit are still local, pending review before push.

@@ -65,7 +65,8 @@ To work on this project, a contributor needs:
 **All platforms**
 
 - [Git](https://git-scm.com/) + [GitHub CLI (`gh`)](https://cli.github.com/) — repo already initialized and authenticated for this machine.
-- A JSON validator/formatter for editing the quote corpus (editor plugin is fine; no dedicated CLI required yet).
+- [Node.js](https://nodejs.org/) (v20+) — runs the repo's quality-gate tooling (markdown/corpus lint, corpus tests, commit hooks). Dev-only: this does not give the product a backend, see the offline-first decision above.
+- Run `npm install` once after cloning — this also installs the pre-commit/commit-msg git hooks via husky's `prepare` script.
 
 **iOS / macOS**
 
@@ -84,3 +85,18 @@ To work on this project, a contributor needs:
 **Not required**
 
 - No backend/cloud tooling (no server, no database service, no CI deploy target) — the offline-first, static-corpus architecture means the only "infrastructure" is the GitHub repo itself.
+
+## Quality Gates
+
+Enforced today via git hooks (husky), scoped to what actually exists in the repo — markdown docs and the JSON quote corpus. See [CLAUDE.md](CLAUDE.md) for the commit convention these hooks require.
+
+| Gate | `npm run` | What it checks |
+| --- | --- | --- |
+| Lint | `lint` | `markdownlint-cli2` on every `.md` file; a hand-written schema check (`scripts/validate-corpus.js`) on `corpus/quotes.json` — required fields, types, no duplicate quotes. |
+| Test | `test` | Node's built-in test runner (`node --test`) against `tests/corpus.test.js`, covering the corpus validator's rules. |
+| Build | `build` | Re-runs corpus validation and writes `corpus/quotes.compiled.json` (gitignored) — a placeholder for the real JSON → SQLite compile step (still open, see TASKS.md M1). |
+| Dependency audit | `audit` | `npm audit --audit-level=moderate` against this repo's own devDependencies (husky, commitlint, markdownlint-cli2). |
+
+All four run on `git commit` via `.husky/pre-commit`; a failing step blocks the commit. `.husky/commit-msg` separately runs commitlint against the commit message.
+
+**This does not yet cover native app code**, because no iOS/Android project has been scaffolded (TASKS.md M1). Once those exist, this table gets new rows — SwiftLint + `xcodebuild`/XCTest for iOS, ktlint + Gradle/JUnit for Android — wired into the same pre-commit hook rather than replacing it. Tracked as follow-on tasks in TASKS.md.

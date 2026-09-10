@@ -6,6 +6,17 @@ Check items off as they land. Exit criteria for each milestone is listed at the 
 
 ---
 
+## Tooling & Quality Gates
+
+- [x] Set up husky pre-commit hook: markdown + corpus lint, corpus test suite, corpus build/validation, `npm audit`
+- [x] Set up husky commit-msg hook + commitlint for Conventional Commits
+- [x] Write a corpus schema validator ([scripts/validate-corpus.js](scripts/validate-corpus.js)) and its test suite ([tests/corpus.test.js](tests/corpus.test.js))
+- [ ] **(newly discovered)** Once the iOS Xcode project exists (below): add SwiftLint + `xcodebuild`/XCTest to the pre-commit hook
+- [ ] **(newly discovered)** Once the Android Studio project exists (below): add ktlint + Gradle build/JUnit to the pre-commit hook
+- [ ] **(newly discovered)** Once native projects exist: add native dependency vulnerability scanning (CocoaPods/SPM audit, Gradle dependency check) alongside `npm audit`
+
+---
+
 ## M1 — Corpus & Core Widget
 
 **Quote corpus**
@@ -13,8 +24,8 @@ Check items off as they land. Exit criteria for each milestone is listed at the 
 - [ ] Transcribe cold-open narration lines episode-by-episode (season, episode, arc, exact text) — **blocked, see [corpus/README.md](corpus/README.md):** Claude won't bulk-generate ~130 episodes of verbatim copyrighted narration from memory (copyright + accuracy risk, see PRD §11); needs sourcing from a legitimate transcript/subtitle source, see newly discovered task below
 - [ ] Fact-check transcriptions against source audio/subtitles for accuracy
 - [x] Define the JSON schema: `text`, `episodeTitle`, `season`, `episode`, `arc` — seeded in [corpus/quotes.json](corpus/quotes.json) with one verified entry
-- [ ] Write the JSON → SQLite build step for on-device querying
-- [ ] Add a validation script that catches schema violations and duplicate entries
+- [ ] Write the JSON → SQLite build step for on-device querying (`npm run build` currently just re-validates and writes `corpus/quotes.compiled.json` as a placeholder — see [scripts/validate-corpus.js](scripts/validate-corpus.js))
+- [x] Add a validation script that catches schema violations and duplicate entries — [scripts/validate-corpus.js](scripts/validate-corpus.js), covered by [tests/corpus.test.js](tests/corpus.test.js)
 - [ ] **(newly discovered)** Source the remaining ~129 cold-open quotes from a transcript/subtitle source the user has legitimate access to; Claude can validate structure/schema and write build tooling once real text is supplied
 
 **iOS widget**

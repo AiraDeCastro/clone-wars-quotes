@@ -71,6 +71,7 @@ To work on this project, a contributor needs:
 **iOS / macOS**
 
 - macOS with [Xcode](https://developer.apple.com/xcode/) (current stable) — required for WidgetKit development and Simulator testing; there is no way around needing a Mac for this target.
+- [XcodeGen](https://github.com/yonaskolb/XcodeGen) (`brew install xcodegen`) — the `.xcodeproj` isn't checked into the repo; `ios/project.yml` is the source of truth and generates it. Chosen because a `.xcodeproj` is a fragile, largely-binary/plist structure that's unsafe to hand-author or patch without Xcode itself to verify — a declarative YAML spec is diffable and reviewable in PRs instead.
 - An Apple Developer account — required to test widgets on a physical device and for any future TestFlight/App Store distribution decision (see PRD §11 IP risk — hold off on public listing until that's resolved).
 
 **Android**

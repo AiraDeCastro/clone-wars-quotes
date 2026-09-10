@@ -30,12 +30,15 @@ Check items off as they land. Exit criteria for each milestone is listed at the 
 
 **iOS widget**
 
-- [ ] Set up Xcode project + WidgetKit extension target
-- [ ] Bundle the compiled corpus with the app target
-- [ ] Implement random, no-repeat-until-exhausted quote selection
-- [ ] Build small and medium widget size layouts (quote only / quote + attribution)
-- [ ] Wire manual refresh via App Intent + widget timeline reload
-- [ ] Verify WCAG AA contrast on both layouts
+- [ ] Set up Xcode project + WidgetKit extension target — **source scaffold written** ([ios/](ios/): `project.yml` for XcodeGen, `ColdOpen` app target, `ColdOpenWidgetExtension` target), **but not yet generated, opened, or built** — done from a Windows machine with no Xcode/Swift toolchain available. Next: on macOS, run `xcodegen generate` and confirm it opens and builds in Xcode. See [ios/README.md](ios/README.md).
+- [ ] Bundle the compiled corpus with the app target — partially done: `npm run sync:ios` copies `corpus/quotes.json` into the `ColdOpenCore` package resource manually; not yet wired into an Xcode build phase (see newly discovered task below)
+- [x] Implement random, no-repeat-until-exhausted quote selection — algorithm implemented and unit-tested in `ColdOpenCore`'s `QuoteSelector` ([ios/ColdOpenCore/Sources/ColdOpenCore/QuoteSelector.swift](ios/ColdOpenCore/Sources/ColdOpenCore/QuoteSelector.swift), tests in `QuoteSelectorTests.swift`) — but see newly discovered task below, it isn't wired into the widget yet
+- [ ] Build small and medium widget size layouts (quote only / quote + attribution) — SwiftUI view + `.supportedFamilies([.systemSmall, .systemMedium])` written in `ColdOpenWidget.swift`, not yet visually verified in Simulator
+- [ ] Wire manual refresh via App Intent + widget timeline reload — not started; current `TimelineProvider` uses reload policy `.never` with no App Intent
+- [ ] Verify WCAG AA contrast on both layouts — can't check without rendering; open
+- [ ] **(newly discovered)** Persist `QuoteSelector`'s "already shown" state across widget reloads via App Group shared `UserDefaults` — a WidgetKit extension process is effectively stateless between timeline reloads, so the in-memory no-repeat logic doesn't survive on its own. The widget currently falls back to plain `randomElement()`. See the doc comment on `QuoteSelector`.
+- [ ] **(newly discovered)** Wire `npm run sync:ios` into an Xcode "Run Script" build phase so the bundled corpus resource can't silently drift from `corpus/quotes.json`.
+- [ ] **(newly discovered)** No app icon or launch screen asset catalog exists yet — `Info.plist` references `AppIcon` but nothing backs it.
 
 **Android widget**
 

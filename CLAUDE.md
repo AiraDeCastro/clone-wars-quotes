@@ -59,6 +59,10 @@ Don't add these without the user asking first — they were deliberately cut:
 
 Clean, minimal, Clone Wars-themed, beautiful — in that priority order. Deep space-navy/gunmetal grounds, one desaturated accent color per widget instance, generous negative space around the quote text. At most one faction emblem, and only at the large widget size. Refresh transitions should be quick (sub-200ms) and subtle — a wipe or flicker, never a loading spinner.
 
+## Environment note
+
+Claude Code sessions on this project have so far run on a **Windows machine with no Swift toolchain, no Xcode, and no XcodeGen available**. The `ios/` scaffold was written and reviewed here but **never compiled or run** — see [ios/README.md](ios/README.md) for exactly what is and isn't verified. Don't claim an iOS build, test run, or Simulator check "passes" unless it was actually run on macOS in that session — check TASKS.md for what's genuinely confirmed vs. just written.
+
 ## Commit standards
 
 This repo enforces quality gates and a commit format via git hooks (husky) — see [PLANNING.md](PLANNING.md#quality-gates) for what each gate checks.
@@ -79,3 +83,12 @@ This repo enforces quality gates and a commit format via git hooks (husky) — s
 - Set up the pre-commit quality pipeline: husky-managed `pre-commit` hook running markdown/corpus lint, the new corpus test suite ([tests/corpus.test.js](tests/corpus.test.js)), a corpus build/validation step ([scripts/validate-corpus.js](scripts/validate-corpus.js)), and `npm audit`; a `commit-msg` hook running commitlint to enforce Conventional Commits. Hit and fixed 2 high-severity vulnerabilities in the tooling's own dependencies (`smol-toml`, via a `package.json` override) before wiring the audit gate. Verified the hooks actually block a non-conventional commit message and pass a conventional one — this was committed as `build: add pre-commit quality gates and conventional commit enforcement` (commit `1dccdf6`).
 - Documented all of this in [PLANNING.md](PLANNING.md) (new Quality Gates section, Node.js added to Required Tools) and this file (new Commit standards section above), plus follow-on TASKS.md items for wiring native iOS/Android lint+build+test into the same hook once those projects are scaffolded.
 - The doc updates (PLANNING.md, TASKS.md, this file) made after that commit are still local, pending review before push.
+
+**2026-09-09 (continued) — iOS scaffold**
+
+- Started scaffolding the iOS app under [ios/](ios/): an [XcodeGen](https://github.com/yonaskolb/XcodeGen) `project.yml` (source of truth for the Xcode project, since a `.xcodeproj` isn't safe to hand-author or verify without Xcode), a `ColdOpen` app target, a `ColdOpenWidgetExtension` widget target, and a local `ColdOpenCore` Swift package (pure `Foundation`, shared by both targets) with `Quote`, `QuoteCorpus`, and `QuoteSelector` (the random no-repeat-until-exhausted algorithm), each with XCTest coverage.
+- **None of this has been built or run** — no Swift toolchain exists on this machine (confirmed by checking for `swift` and `xcodegen`, both absent). Added the Environment note above so future sessions don't assume otherwise.
+- Found and logged a real design gap while writing this: `QuoteSelector`'s in-memory "already shown" state won't survive a WidgetKit extension process reload, so true no-repeat behavior at the widget level needs App Group-shared persistence — not implemented yet, logged as a TASKS.md item rather than papered over.
+- Added `npm run sync:ios` (copies `corpus/quotes.json` into the Swift package's bundled resource) — manual for now, not wired into the Node pre-commit hook or an Xcode build phase yet (both noted as open follow-ons).
+- TASKS.md updated in detail: the Xcode-setup task is marked as "scaffold written, not yet generated/built," the quote-selection algorithm task is checked off (it's implemented and unit-tested) with a note about the widget-persistence gap, and three new discovered tasks were logged (App Group persistence, wiring the sync script into a build phase, missing app icon asset catalog).
+- Not yet committed — pending review.

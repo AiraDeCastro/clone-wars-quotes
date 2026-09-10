@@ -19,6 +19,7 @@
     "test": "node --test \"tests/**/*.test.js\"",
     "build": "node scripts/validate-corpus.js --build",
     "audit": "npm audit --audit-level=moderate",
+    "sync:ios": "node scripts/sync-ios-corpus.js",
     "prepare": "husky"
   },
   "devDependencies": {

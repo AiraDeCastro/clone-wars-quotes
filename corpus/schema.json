@@ -1,0 +1,17 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Cold Open quote corpus entry",
+  "type": "array",
+  "items": {
+    "type": "object",
+    "required": ["text", "episodeTitle", "season", "episode", "arc"],
+    "additionalProperties": false,
+    "properties": {
+      "text": { "type": "string", "minLength": 1 },
+      "episodeTitle": { "type": "string", "minLength": 1 },
+      "season": { "type": "integer", "minimum": 1 },
+      "episode": { "type": "integer", "minimum": 1 },
+      "arc": { "type": "string", "minLength": 1 }
+    }
+  }
+}

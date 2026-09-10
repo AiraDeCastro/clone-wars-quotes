@@ -28,7 +28,7 @@ Every episode of *The Clone Wars* opens with a newsreel-style narrator setting t
 ## 4. Feature Scope
 
 | Requirement | Priority | Detail |
-|---|---|---|
+| --- | --- | --- |
 | Randomized quote display | P0 | One quote at a time, random, no-repeat-until-exhausted. |
 | Manual refresh | P0 | Tap swaps in a new quote without opening the app. |
 | Scheduled auto-refresh | P1 | Rotates on a user-set cadence within OS widget budgets. |
@@ -59,7 +59,7 @@ Clean, minimal, Clone Wars-themed, beautiful — in that priority order. Deep sp
 ## 8. Platform Notes
 
 | Platform | Framework | Constraint |
-|---|---|---|
+| --- | --- | --- |
 | iOS / iPadOS | WidgetKit (Swift) | System-budgeted timeline reloads (~40–70/day); tap-to-refresh needs a deep link + App Intent. |
 | Android | Jetpack Glance / App Widgets | RemoteViews layout limits; custom fonts need a bitmap fallback on older API levels. |
 | macOS | WidgetKit (shared with iOS) | Same target via shared code; Notification Center + desktop placement. |
@@ -89,7 +89,7 @@ Clean, minimal, Clone Wars-themed, beautiful — in that priority order. Deep sp
 ## 12. Milestones
 
 | Phase | Scope | Exit criteria |
-|---|---|---|
+| --- | --- | --- |
 | M1 — Corpus & core widget | Quote data built; iOS + Android small/medium widget, manual refresh | Installable, shows real random quotes, no crashes |
 | M2 — Sharing | Share card generation, share sheet wiring, IG/X/FB targets | Quote can go from widget tap to posted story in <10s |
 | M3 — Polish & scheduled refresh | Large widget size, auto-refresh cadence, favorites | D30 retention measured against §2 goal |

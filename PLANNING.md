@@ -76,7 +76,8 @@ To work on this project, a contributor needs:
 
 **Android**
 
-- [Android Studio](https://developer.android.com/studio) (current stable) with the Android SDK — required for Jetpack Glance widget development and the emulator.
+- [Android Studio](https://developer.android.com/studio) (current stable) with the Android SDK — required for Jetpack Glance widget development and the emulator. It also generates the Gradle wrapper (`gradlew`) on first open, which isn't checked into the repo yet (see `android/README.md`).
+- A JDK (17+) and Gradle — `android/core` is a pure Kotlin/JVM module with no Android dependency, so its tests (`gradle :core:test`) can be run with just these two, without the Android SDK or an emulator. Useful as a fast first check before touching Android Studio at all.
 - A physical Android device or emulator image running a widget-capable API level for real refresh-budget testing (emulator widget refresh behavior doesn't always match real devices).
 
 **Windows** (M4, later)

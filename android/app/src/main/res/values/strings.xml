@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Cold Open</string>
+    <string name="widget_description">A random line from a Clone Wars cold open.</string>
+</resources>

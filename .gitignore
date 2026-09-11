@@ -23,6 +23,9 @@ DerivedData/
 *.dSYM
 
 # Android
+# (gradlew / gradlew.bat / gradle/wrapper/gradle-wrapper.jar aren't generated
+# yet — see android/README.md. Once `gradle wrapper` is run, those three
+# files should be committed, not ignored.)
 *.iml
 .gradle/
 local.properties

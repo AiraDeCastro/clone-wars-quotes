@@ -20,6 +20,7 @@
     "build": "node scripts/validate-corpus.js --build",
     "audit": "npm audit --audit-level=moderate",
     "sync:ios": "node scripts/sync-ios-corpus.js",
+    "sync:android": "node scripts/sync-android-corpus.js",
     "prepare": "husky"
   },
   "devDependencies": {

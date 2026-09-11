@@ -42,12 +42,16 @@ Check items off as they land. Exit criteria for each milestone is listed at the 
 
 **Android widget**
 
-- [ ] Set up Android Studio project + Jetpack Glance widget module
-- [ ] Bundle the compiled corpus with the app
-- [ ] Implement random, no-repeat-until-exhausted quote selection (shared logic/schema with iOS, platform-native implementation)
-- [ ] Build small and medium widget size layouts
-- [ ] Wire manual refresh via Glance action + widget update
-- [ ] Verify custom font renders correctly across target API levels (bitmap fallback if needed)
+- [ ] Set up Android Studio project + Jetpack Glance widget module — **source scaffold written** ([android/](android/): Gradle version-catalog project, `:core` Kotlin/JVM module, `:app` module with `MainActivity` + `ColdOpenWidget`), **but not yet built, synced, or opened** — done from a Windows machine with no JDK/Android SDK/Gradle available. No Gradle wrapper is checked in either (deliberately — see android/README.md, it's a binary bootstrapper that shouldn't be hand-fabricated). Next: on a machine with the Android toolchain, run `gradle :core:test` first, then open in Android Studio (which will offer to generate the wrapper) and confirm `:app` builds. See [android/README.md](android/README.md).
+- [ ] Bundle the compiled corpus with the app — partially done: `npm run sync:android` copies `corpus/quotes.json` into `app/src/main/assets/quotes.json` manually; not yet wired into a Gradle `preBuild` task (see newly discovered task below)
+- [x] Implement random, no-repeat-until-exhausted quote selection (shared logic/schema with iOS, platform-native implementation) — algorithm implemented and unit-tested in `:core`'s `QuoteSelector` ([android/core/src/main/kotlin/com/coldopen/core/QuoteSelector.kt](android/core/src/main/kotlin/com/coldopen/core/QuoteSelector.kt)) — but see newly discovered task below, it isn't wired into the widget yet
+- [ ] Build small and medium widget size layouts — widget provider XML (`cold_open_widget_info.xml`) declares resizable min/max dimensions and a Glance composable renders the content; not yet visually verified on an emulator/device
+- [ ] Wire manual refresh via Glance action + widget update — not started; the widget currently only updates on the OS's own schedule/reinstall, no tap action wired
+- [ ] Verify custom font renders correctly across target API levels (bitmap fallback if needed) — open, no custom font chosen yet
+- [ ] **(newly discovered)** Persist `QuoteSelector`'s "already shown" state via DataStore/SharedPreferences so the widget's random selection is actually no-repeat — simpler than iOS's equivalent gap, since an Android widget runs in the app's own process rather than a separate extension. See the doc comment on `QuoteSelector` in `android/core`.
+- [ ] **(newly discovered)** Wire `npm run sync:android` into a Gradle `preBuild` task so the bundled corpus asset can't silently drift from `corpus/quotes.json`.
+- [ ] **(newly discovered)** No app icon exists yet — the manifest deliberately omits `android:icon` rather than referencing a missing mipmap.
+- [ ] **(newly discovered)** The `androidx.glance.*` API calls in `ColdOpenWidget.kt` were written from training knowledge, not verified against the pinned Glance 1.1.1 docs or an actual build — expect import/signature fixes on first compile.
 
 **Exit criteria:** Widget installable on iOS and Android, shows real random quotes from the actual corpus, manual refresh works, no crashes.
 

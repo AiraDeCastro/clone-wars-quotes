@@ -61,7 +61,7 @@ Clean, minimal, Clone Wars-themed, beautiful — in that priority order. Deep sp
 
 ## Environment note
 
-Claude Code sessions on this project have so far run on a **Windows machine with no Swift toolchain, no Xcode, and no XcodeGen available**. The `ios/` scaffold was written and reviewed here but **never compiled or run** — see [ios/README.md](ios/README.md) for exactly what is and isn't verified. Don't claim an iOS build, test run, or Simulator check "passes" unless it was actually run on macOS in that session — check TASKS.md for what's genuinely confirmed vs. just written.
+Claude Code sessions on this project have so far run on a **Windows machine with no Swift toolchain, no Xcode, no XcodeGen, no JDK, no Android SDK, and no Gradle available**. Both the `ios/` and `android/` scaffolds were written and reviewed here but **never compiled or run** — see [ios/README.md](ios/README.md) and [android/README.md](android/README.md) for exactly what is and isn't verified in each. Don't claim an iOS or Android build, test run, or Simulator/emulator check "passes" unless it was actually run on the required platform (macOS for iOS; any OS with a JDK + Android SDK for Android) in that session — check TASKS.md for what's genuinely confirmed vs. just written.
 
 ## Commit standards
 
@@ -91,4 +91,15 @@ This repo enforces quality gates and a commit format via git hooks (husky) — s
 - Found and logged a real design gap while writing this: `QuoteSelector`'s in-memory "already shown" state won't survive a WidgetKit extension process reload, so true no-repeat behavior at the widget level needs App Group-shared persistence — not implemented yet, logged as a TASKS.md item rather than papered over.
 - Added `npm run sync:ios` (copies `corpus/quotes.json` into the Swift package's bundled resource) — manual for now, not wired into the Node pre-commit hook or an Xcode build phase yet (both noted as open follow-ons).
 - TASKS.md updated in detail: the Xcode-setup task is marked as "scaffold written, not yet generated/built," the quote-selection algorithm task is checked off (it's implemented and unit-tested) with a note about the widget-persistence gap, and three new discovered tasks were logged (App Group persistence, wiring the sync script into a build phase, missing app icon asset catalog).
+- Committed as `feat(ios): scaffold Xcode project sources via XcodeGen` (commit `781d5f4`) and pushed to `origin/master`.
+
+**2026-09-10 — Android scaffold**
+
+- Scaffolded the Android app under [android/](android/): a two-module Gradle project (version catalog in `gradle/libs.versions.toml`) — `:core`, a pure Kotlin/JVM module (no Android dependency, mirroring `ColdOpenCore` on iOS) with `Quote`, `QuoteCorpus`, and a unit-tested `QuoteSelector`; and `:app`, the Android application module with a placeholder `MainActivity` and a Jetpack Glance `ColdOpenWidget` + `ColdOpenWidgetReceiver`.
+- **None of this has been built, synced, or opened** — confirmed no `java`, `gradle`, or Android SDK/`sdkmanager` on this machine. Extended the Environment note above to cover Android as well as iOS.
+- Deliberately did **not** fabricate a Gradle wrapper (`gradlew`/`gradlew.bat`/`gradle-wrapper.jar`) — the `.jar` is a real binary bootstrapper that isn't safe to hand-author; documented in `android/README.md` that Android Studio generates it on first open, or `gradle wrapper` does it manually.
+- Found and logged the Android-side counterpart to the iOS persistence gap: `QuoteSelector`'s in-memory state doesn't survive restarts here either, but since an Android widget runs in the app's own process (not a separate extension like iOS), the fix is a plain DataStore/SharedPreferences read/write — logged as a follow-on task, not implemented yet.
+- Flagged specifically that the `androidx.glance.*` API calls in `ColdOpenWidget.kt` were written from training knowledge and are **not verified** against the actual pinned Glance 1.1.1 API surface — logged as its own TASKS.md item so it isn't mistaken for confirmed-working code.
+- Added `npm run sync:android` (copies `corpus/quotes.json` into `app/src/main/assets/quotes.json`) — manual for now, same pattern as `sync:ios`.
+- TASKS.md updated in detail: Android Studio/Glance setup marked "scaffold written, not yet built," the quote-selection algorithm checked off with the persistence caveat, and four new discovered tasks logged (DataStore persistence, wiring the sync script into a Gradle task, missing app icon, unverified Glance API calls).
 - Not yet committed — pending review.

@@ -1,11 +1,11 @@
 // Validates corpus/quotes.json against the shape described in corpus/schema.json.
-// Used as both the lint step (`npm run lint:corpus`) and the build step (`npm run build`).
+// Used as the lint step (`npm run lint:corpus`); also imported by
+// scripts/build-corpus.js so the build step validates before compiling.
 
 const fs = require("node:fs");
 const path = require("node:path");
 
 const CORPUS_PATH = path.join(__dirname, "..", "corpus", "quotes.json");
-const COMPILED_PATH = path.join(__dirname, "..", "corpus", "quotes.compiled.json");
 
 const REQUIRED_FIELDS = ["text", "episodeTitle", "season", "episode", "arc"];
 
@@ -67,8 +67,6 @@ function validateCorpus(entries) {
 }
 
 function main() {
-  const shouldBuild = process.argv.includes("--build");
-
   const raw = fs.readFileSync(CORPUS_PATH, "utf8");
   let entries;
   try {
@@ -86,17 +84,10 @@ function main() {
   }
 
   console.log(`Corpus valid: ${entries.length} quote(s).`);
-
-  if (shouldBuild) {
-    const compiled = [...entries].sort((a, b) => a.season - b.season || a.episode - b.episode);
-    fs.writeFileSync(COMPILED_PATH, JSON.stringify(compiled, null, 2) + "\n");
-    console.log(`Wrote compiled corpus to ${COMPILED_PATH}.`);
-    console.log("Note: this is a placeholder build step. The real JSON -> SQLite compile is still open (see TASKS.md M1).");
-  }
 }
 
 if (require.main === module) {
   main();
 }
 
-module.exports = { validateCorpus };
+module.exports = { validateCorpus, CORPUS_PATH };

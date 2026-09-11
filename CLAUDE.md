@@ -128,3 +128,15 @@ This repo enforces quality gates and a commit format via git hooks (husky) — s
 - Added `npm run sync:windows` (copies `corpus/quotes.json` into `windows/WidgetProvider/quotes.json`), same pattern as the other two platforms.
 - TASKS.md updated: the "evaluate Widgets Board maturity" task checked off (the research itself is the deliverable), the widget-build task marked "scaffold written, not built," and five new discovered tasks logged (the `.wapproj` gap, persistence, missing icons, the unverified NuGet version, and adding a `large` size capability later).
 - Not yet committed — pending review.
+- Committed as `feat(windows): scaffold widget provider via Windows App SDK` (commit `b8385b0`) and pushed to `origin/master`.
+
+**2026-09-10 (continued) — real JSON → SQLite build step**
+
+- Asked to check TASKS.md and pick the next task. Passed over the M1 corpus tasks blocked on copyright/external sourcing and the platform tasks blocked on missing native toolchains (iOS/Android/Windows all still can't be built here), and picked the one clearly unblocked, verifiable, cross-platform-relevant item: the JSON → SQLite build step, which had been a placeholder since M1 setup.
+- Discovered Node 24 (installed on this machine) ships `node:sqlite` built in, unflagged — confirmed by actually running a real CREATE TABLE/INSERT/SELECT against it before relying on it. Used that instead of an npm dependency (e.g. better-sqlite3), keeping the tooling's dependency/audit surface exactly as small as it's been since the pre-commit pipeline was set up.
+- Wrote the test first (`tests/build-corpus.test.js`: row mapping, sequential ids, idempotent rebuild, empty-corpus edge case), confirmed it failed for the right reason (missing module), then implemented `scripts/build-corpus.js` to make it pass — per this file's own Commit standards section.
+- Schema is one `quotes` table with an auto-incrementing `id`, deliberately no other indexes yet — chosen specifically so a future on-device client can query `WHERE id NOT IN (shown_ids) ORDER BY RANDOM() LIMIT 1` instead of loading the whole corpus into memory the way every platform's `QuoteSelector` still does today; documented that reasoning in the script's own header comment, not just in this log.
+- Simplified `scripts/validate-corpus.js` back to pure validation (removed its `--build`/`quotes.compiled.json` placeholder logic, now superseded), updated `package.json`'s `build` script, and swapped the gitignored build artifact from `quotes.compiled.json` to `quotes.sqlite` in `.gitignore` and `.markdownlint-cli2.jsonc`.
+- Verified end-to-end, not just via the test suite: ran `npm run build` for real and inspected the resulting `corpus/quotes.sqlite` file's actual contents with a separate `node:sqlite` query.
+- Logged a new discovered task: no platform (iOS/Android/Windows) actually reads the compiled SQLite file yet — they all still bundle and parse the flat JSON directly. Wiring that up is separate follow-on work, not something to fold into this change.
+- Not yet committed — pending review.

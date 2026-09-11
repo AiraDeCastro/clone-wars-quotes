@@ -6,5 +6,5 @@
     "MD036": false,
     "MD041": false
   },
-  "ignores": ["node_modules", "corpus/quotes.compiled.json"]
+  "ignores": ["node_modules"]
 }

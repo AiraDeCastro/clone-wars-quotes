@@ -17,7 +17,7 @@
     "lint:corpus": "node scripts/validate-corpus.js",
     "lint": "npm run lint:md && npm run lint:corpus",
     "test": "node --test \"tests/**/*.test.js\"",
-    "build": "node scripts/validate-corpus.js --build",
+    "build": "node scripts/build-corpus.js",
     "audit": "npm audit --audit-level=moderate",
     "sync:ios": "node scripts/sync-ios-corpus.js",
     "sync:android": "node scripts/sync-android-corpus.js",

@@ -98,8 +98,8 @@ Enforced today via git hooks (husky), scoped to what actually exists in the repo
 | Gate | `npm run` | What it checks |
 | --- | --- | --- |
 | Lint | `lint` | `markdownlint-cli2` on every `.md` file; a hand-written schema check (`scripts/validate-corpus.js`) on `corpus/quotes.json` — required fields, types, no duplicate quotes. |
-| Test | `test` | Node's built-in test runner (`node --test`) against `tests/corpus.test.js`, covering the corpus validator's rules. |
-| Build | `build` | Re-runs corpus validation and writes `corpus/quotes.compiled.json` (gitignored) — a placeholder for the real JSON → SQLite compile step (still open, see TASKS.md M1). |
+| Test | `test` | Node's built-in test runner (`node --test`) against `tests/*.test.js`, covering the corpus validator and the SQLite build. |
+| Build | `build` | `scripts/build-corpus.js` validates, then compiles `corpus/quotes.json` into `corpus/quotes.sqlite` (gitignored) via Node's built-in `node:sqlite` — no npm dependency needed. One `quotes` table, auto-incrementing `id` — see the script's own comment for why no other indexes exist yet. |
 | Dependency audit | `audit` | `npm audit --audit-level=moderate` against this repo's own devDependencies (husky, commitlint, markdownlint-cli2). |
 
 All four run on `git commit` via `.husky/pre-commit`; a failing step blocks the commit. `.husky/commit-msg` separately runs commitlint against the commit message.

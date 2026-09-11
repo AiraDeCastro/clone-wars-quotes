@@ -83,6 +83,9 @@ To work on this project, a contributor needs:
 **Windows** (M4, later)
 
 - Windows 11 with the Widgets Board platform APIs available — evaluate tooling maturity when this phase starts; not needed for M1–M3.
+- [Visual Studio 2022+](https://visualstudio.microsoft.com/) with the **WinUI application development** workload — required to create the Windows Application Packaging Project (`.wapproj`) that wraps the widget provider; only packaged (MSIX) apps can register as widget providers, and a `.wapproj` isn't safely hand-authored the way `windows/project`'s plain `.csproj` files are (see `windows/README.md`).
+- A .NET SDK (8.0+) — `windows/WidgetProvider.Core` has no Windows-specific dependency, so `dotnet test` on it works without the Windows App SDK or Visual Studio at all, similar to `ColdOpenCore`/`:core` on the other platforms.
+- **Developer Mode** enabled in Windows Settings — required before the widget provider can be deployed/debugged locally.
 
 **Not required**
 

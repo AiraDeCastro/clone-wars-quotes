@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <!-- Deliberately plain net8.0, not net8.0-windows — this project has no
+         Windows-specific dependency, mirroring ColdOpenCore (iOS) and :core
+         (Android): a platform-agnostic logic layer that can be built and
+         tested with a plain `dotnet test`, no Windows App SDK required. -->
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+</Project>

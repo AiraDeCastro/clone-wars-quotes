@@ -1,0 +1,37 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <!-- OutputType Exe (console) rather than WinExe for now, matching
+         Microsoft's own walkthrough: a visible console window makes early
+         debugging easier. Switch to WinExe before any real distribution —
+         see windows/README.md. -->
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0-windows10.0.19041.0</TargetFramework>
+    <TargetPlatformMinVersion>10.0.17763.0</TargetPlatformMinVersion>
+    <RuntimeIdentifiers>win-x86;win-x64;win-arm64</RuntimeIdentifiers>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <RootNamespace>ColdOpen.WidgetProvider</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Version is a plausible current-ish pick, not verified to restore —
+         confirm the actual latest stable Microsoft.WindowsAppSDK version
+         via NuGet before building. See windows/README.md. -->
+    <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.6.240923002" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\WidgetProvider.Core\WidgetProvider.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Synced from corpus/quotes.json via `npm run sync:windows` at the
+         repo root and committed here, same pattern as the iOS and Android
+         bundled copies. -->
+    <Content Include="quotes.json" Condition="Exists('quotes.json')">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+</Project>

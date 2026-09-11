@@ -21,6 +21,7 @@
     "audit": "npm audit --audit-level=moderate",
     "sync:ios": "node scripts/sync-ios-corpus.js",
     "sync:android": "node scripts/sync-android-corpus.js",
+    "sync:windows": "node scripts/sync-windows-corpus.js",
     "prepare": "husky"
   },
   "devDependencies": {

@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  This is NOT a complete, standalone manifest — it's the content to merge
+  into the Package.appxmanifest that Visual Studio generates when you create
+  a "Windows Application Packaging Project" (.wapproj) and add a project
+  reference to WidgetProvider. See windows/README.md for why the .wapproj
+  itself isn't scaffolded here, and exactly what to merge from this file.
+
+  Adapted from Microsoft's "Implement a widget provider in a C# Windows
+  App" walkthrough:
+  https://learn.microsoft.com/windows/apps/develop/widgets/implement-widget-provider-cs
+
+  Identity/Publisher values below are placeholders — Visual Studio assigns
+  real ones when the packaging project is created and you associate it
+  with a Store identity (or leave the sideload-test ones it generates).
+-->
+<Package
+  xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10"
+  xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10"
+  xmlns:rescap="http://schemas.microsoft.com/appx/manifest/foundation/windows10/restrictedcapabilities"
+  xmlns:uap3="http://schemas.microsoft.com/appx/manifest/uap/windows10/3"
+  xmlns:com="http://schemas.microsoft.com/appx/manifest/com/windows10"
+  IgnorableNamespaces="uap uap3 rescap com">
+
+  <Identity
+    Name="ColdOpen.WidgetProvider"
+    Publisher="CN=ColdOpen"
+    Version="0.1.0.0" />
+
+  <Properties>
+    <DisplayName>Cold Open</DisplayName>
+    <PublisherDisplayName>Cold Open (fan project)</PublisherDisplayName>
+    <Logo>Images\StoreLogo.png</Logo>
+  </Properties>
+
+  <Dependencies>
+    <TargetDeviceFamily Name="Windows.Desktop" MinVersion="10.0.19041.0" MaxVersionTested="10.0.22621.0" />
+  </Dependencies>
+
+  <Resources>
+    <Resource Language="en-us" />
+  </Resources>
+
+  <Applications>
+    <Application Id="ColdOpenWidgetProvider" Executable="WidgetProvider\WidgetProvider.exe" EntryPoint="Windows.FullTrustApplication">
+      <uap:VisualElements
+        DisplayName="Cold Open"
+        Description="Randomized Star Wars: The Clone Wars cold-open quotes, as a Windows widget."
+        BackgroundColor="transparent"
+        Square150x150Logo="Images\Square150x150Logo.png"
+        Square44x44Logo="Images\Square44x44Logo.png">
+      </uap:VisualElements>
+
+      <Extensions>
+        <!-- Registers the provider executable as a COM server (the packaged-app
+             equivalent of a registry-based COM registration). -->
+        <com:Extension Category="windows.comServer">
+          <com:ComServer>
+            <com:ExeServer Executable="WidgetProvider\WidgetProvider.exe" DisplayName="Cold Open Widget Provider">
+              <!-- Must match Program.cs's clsidFactory GUID exactly. -->
+              <com:Class Id="6041f1cb-d544-4bec-8d4b-fd9e733060f5" DisplayName="Cold Open Widget Provider" />
+            </com:ExeServer>
+          </com:ComServer>
+        </com:Extension>
+
+        <!-- Registers the app as a widget provider with the Widgets Board. -->
+        <uap3:Extension Category="windows.appExtension">
+          <uap3:AppExtension Name="com.microsoft.windows.widgets" DisplayName="ColdOpen" Id="ColdOpenWidgetApp" PublicFolder="Public">
+            <uap3:Properties>
+              <WidgetProvider>
+                <ProviderIcons>
+                  <Icon Path="Images\StoreLogo.png" />
+                </ProviderIcons>
+                <Activation>
+                  <!-- Must match Program.cs's clsidFactory GUID exactly. -->
+                  <CreateInstance ClassId="6041f1cb-d544-4bec-8d4b-fd9e733060f5" />
+                </Activation>
+
+                <Definitions>
+                  <Definition Id="ColdOpen_Widget"
+                      DisplayName="Cold Open"
+                      Description="A random line from a Clone Wars cold open.">
+                    <Capabilities>
+                      <Capability>
+                        <Size Name="small" />
+                      </Capability>
+                      <Capability>
+                        <Size Name="medium" />
+                      </Capability>
+                    </Capabilities>
+                    <ThemeResources>
+                      <Icons>
+                        <Icon Path="ProviderAssets\ColdOpen_Icon.png" />
+                      </Icons>
+                      <Screenshots>
+                        <Screenshot Path="ProviderAssets\ColdOpen_Screenshot.png" DisplayAltText="Cold Open widget showing a Clone Wars quote" />
+                      </Screenshots>
+                      <DarkMode />
+                      <LightMode />
+                    </ThemeResources>
+                  </Definition>
+                </Definitions>
+              </WidgetProvider>
+            </uap3:Properties>
+          </uap3:AppExtension>
+        </uap3:Extension>
+      </Extensions>
+    </Application>
+  </Applications>
+
+  <Capabilities>
+    <rescap:Capability Name="runFullTrust" />
+  </Capabilities>
+
+</Package>

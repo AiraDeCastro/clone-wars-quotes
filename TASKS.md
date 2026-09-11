@@ -89,8 +89,10 @@ Check items off as they land. Exit criteria for each milestone is listed at the 
 
 ## M4 — macOS / Windows
 
-- [ ] Port the WidgetKit target to macOS (Catalyst/native), reusing the iOS corpus and rendering code where possible
-- [ ] Verify Notification Center + desktop widget placement on macOS
+- [ ] Port the WidgetKit target to macOS (native), reusing the iOS corpus and rendering code where possible — **source scaffold written**: `ios/project.yml` extended with `ColdOpenMac` + `ColdOpenWidgetExtensionMac` targets, both compiling the *same* `ios/ColdOpen`/`ios/ColdOpenWidget` source as the iOS targets (verified by inspection: no iOS-only APIs used) plus the shared `ColdOpenCore` package (already declares `.macOS(.v13)` support). **Not yet generated or built** — same environment constraint as the iOS scaffold (no macOS/Xcode/XcodeGen here). Next: on macOS, `xcodegen generate` and confirm all four targets (2 iOS + 2 macOS) coexist in one project without collision — untested project shape. See [ios/README.md](ios/README.md).
+- [ ] Verify Notification Center + desktop widget placement on macOS — can't check without a Mac; open
+- [ ] **(newly discovered)** No app icon for the macOS targets — `ColdOpenMac/Info.plist` doesn't reference one at all yet (iOS at least references a not-yet-existing `AppIcon`; mac doesn't even do that).
+- [ ] **(newly discovered)** `ENABLE_HARDENED_RUNTIME: true` was set on both macOS targets as a reasonable default for eventual notarization, but is unverified — confirm it doesn't cause build friction before code signing is actually set up.
 - [ ] Evaluate current maturity of the Windows Widgets Board API
 - [ ] Build the Windows widget target (small/medium/large parity with mobile P0 scope)
 - [ ] Confirm share-sheet equivalents work on both desktop platforms

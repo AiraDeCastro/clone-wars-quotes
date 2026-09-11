@@ -3,6 +3,7 @@ options:
   bundleIdPrefix: com.coldopen
   deploymentTarget:
     iOS: "17.0"
+    macOS: "14.0"
 
 packages:
   ColdOpenCore:
@@ -45,3 +46,47 @@ targets:
         PRODUCT_NAME: "Cold Open Widget"
         SWIFT_VERSION: "5.0"
         GENERATE_INFOPLIST_FILE: false
+
+  # macOS targets below compile the SAME ColdOpen/ and ColdOpenWidget/
+  # source directories as the iOS targets above — not a copy. Nothing in
+  # those Swift files is iOS-only (verified by inspection: plain
+  # SwiftUI/WidgetKit/Foundation, no #if os(iOS)), so this is genuine
+  # shared-code reuse per PLANNING.md's "macOS: WidgetKit (shared with
+  # iOS)" architecture note, not just a shared corpus/schema.
+  ColdOpenMac:
+    type: application
+    platform: macOS
+    deploymentTarget: "14.0"
+    sources:
+      - path: ColdOpen
+    dependencies:
+      - package: ColdOpenCore
+      - target: ColdOpenWidgetExtensionMac
+        embed: true
+    info:
+      path: ColdOpenMac/Info.plist
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.coldopen.mac.app
+        PRODUCT_NAME: "Cold Open"
+        SWIFT_VERSION: "5.0"
+        GENERATE_INFOPLIST_FILE: false
+        ENABLE_HARDENED_RUNTIME: true
+
+  ColdOpenWidgetExtensionMac:
+    type: app-extension
+    platform: macOS
+    deploymentTarget: "14.0"
+    sources:
+      - path: ColdOpenWidget
+    dependencies:
+      - package: ColdOpenCore
+    info:
+      path: ColdOpenWidgetMac/Info.plist
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.coldopen.mac.app.widget
+        PRODUCT_NAME: "Cold Open Widget"
+        SWIFT_VERSION: "5.0"
+        GENERATE_INFOPLIST_FILE: false
+        ENABLE_HARDENED_RUNTIME: true

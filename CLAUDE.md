@@ -24,7 +24,7 @@ Quote data model, per entry: `text`, `episodeTitle`, `season`, `episode`, `arc`.
 ## Architecture
 
 - **Data is static and offline-first.** The full quote corpus (~130 episodes) ships bundled with the app as versioned JSON/SQLite. No live backend for v1 — don't introduce a network dependency for rendering the widget.
-- **Platform-native widgets, shared data layer.** iOS/macOS use WidgetKit (Swift); Android uses Jetpack Glance / App Widgets (Kotlin); Windows uses the Widgets Board API (treat as stretch — build after the other three are stable). Keep the quote corpus and any quote-selection logic platform-agnostic where the platform allows it; widget rendering code is necessarily platform-specific.
+- **Platform-native widgets, shared data layer.** iOS/macOS use WidgetKit (Swift), and genuinely share the same widget source code between them — see `ios/project.yml`'s `ColdOpenMac`/`ColdOpenWidgetExtensionMac` targets, which compile `ios/ColdOpen`/`ios/ColdOpenWidget` unmodified. Android uses Jetpack Glance / App Widgets (Kotlin); Windows uses the Widgets Board API (treat as stretch — build after the other three are stable). Across that iOS/Android/Windows boundary, widget rendering code is platform-specific; keep the quote corpus and quote-selection logic platform-agnostic where the platform allows it.
 - **Share cards are generated on-device at share time** — themed background + quote + attribution line, exported at 1080×1920 and 1080×1080. Don't pre-render or cache share images server-side; there is no server.
 
 ## Priority discipline (from the PRD)
@@ -102,4 +102,14 @@ This repo enforces quality gates and a commit format via git hooks (husky) — s
 - Flagged specifically that the `androidx.glance.*` API calls in `ColdOpenWidget.kt` were written from training knowledge and are **not verified** against the actual pinned Glance 1.1.1 API surface — logged as its own TASKS.md item so it isn't mistaken for confirmed-working code.
 - Added `npm run sync:android` (copies `corpus/quotes.json` into `app/src/main/assets/quotes.json`) — manual for now, same pattern as `sync:ios`.
 - TASKS.md updated in detail: Android Studio/Glance setup marked "scaffold written, not yet built," the quote-selection algorithm checked off with the persistence caveat, and four new discovered tasks logged (DataStore persistence, wiring the sync script into a Gradle task, missing app icon, unverified Glance API calls).
+- Committed as `feat(android): scaffold Gradle project sources` (commit `a8fb813`) and pushed to `origin/master`.
+
+**2026-09-10 (continued) — macOS widget target**
+
+- Extended `ios/project.yml` with two new targets, `ColdOpenMac` and `ColdOpenWidgetExtensionMac`, rather than creating a separate `macos/` folder — per PLANNING.md's existing "macOS: WidgetKit (shared with iOS)" note and the user's own framing ("the shared macOS widget target"), these compile the *exact same* `ios/ColdOpen` and `ios/ColdOpenWidget` Swift source as the iOS targets, plus the same `ColdOpenCore` package (which already declared `.macOS(.v13)` support from the start).
+- Actually verified by reading both source files first that nothing in them is iOS-only (plain SwiftUI/WidgetKit/Foundation, no `#if os(iOS)`) before wiring them into a macOS target — this is genuine zero-diff code reuse, not an assumption. `containerBackground(for:)` needs macOS 14, so the macOS deployment target is set to 14.0 to match.
+- Added `ColdOpenMac/Info.plist` and `ColdOpenWidgetMac/Info.plist` — separate from the iOS ones since macOS doesn't need `UILaunchScreen`/interface-orientation keys, but everything else about the targets points at the shared source.
+- **Still nothing built or run** — same environment constraint as before. Flagged as untested specifically: whether `xcodegen generate` handles 2 app targets + 2 widget extensions + 1 shared package in one project without collision (a project shape not tried here before), and the unverified `ENABLE_HARDENED_RUNTIME: true` setting added to both mac targets.
+- Refined the "widget rendering is platform-specific" claim in PLANNING.md and this file's Architecture section — it's only true across the iOS/Android/Windows boundary; within Apple's own platforms the rendering code is now demonstrably shared verbatim.
+- No new app icon or DataStore/persistence work done here (mac targets have the same open gaps as iOS) — logged as discovered tasks rather than silently carried over.
 - Not yet committed — pending review.

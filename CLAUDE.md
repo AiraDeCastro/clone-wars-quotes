@@ -147,3 +147,13 @@ This repo enforces quality gates and a commit format via git hooks (husky) — s
 - This one didn't need any toolchain to resolve — just needed to actually look it up. Fetched the NuGet.org package page directly rather than continuing to guess: current stable is `2.4.0` (not a preview), last updated 2026-08-13. The scaffold's placeholder (`1.6.240923002`) was genuinely stale.
 - Updated the pin in [windows/WidgetProvider/WidgetProvider.csproj](windows/WidgetProvider/WidgetProvider.csproj), and updated both places in windows/README.md that called it out as unverified, plus TASKS.md — checked off, with a note that it's still just a version number until a real `dotnet restore` happens on a machine with the .NET SDK.
 - Deliberately small, single-purpose change — didn't bundle in unrelated Windows work (e.g. the `.wapproj`, app icons, or the `large` size capability, all still open) just because I was already in that folder.
+- Committed as `fix(windows): verify and pin the real current WindowsAppSDK version` (commit `c70b2df`) and pushed to `origin/master`.
+
+**2026-09-11 (continued) — wire Android's corpus sync into Gradle**
+
+- Asked again to pick the next task. Weighed the two remaining "wire a sync script into the native build" gaps (iOS's Xcode Run Script phase vs. Android's Gradle `preBuild` task) and picked Android specifically because I have real confidence in the Gradle mechanics (a custom `Exec` task depended on by `preBuild` is a well-established idiom), whereas I was genuinely unsure how an XcodeGen `preBuildScripts` phase orders against a Swift Package's own resource-bundling step — picked the one I could reason about correctly over the one I'd be guessing at.
+- Added a `syncCorpus` task to `android/app/build.gradle.kts` (runs `npm run sync:android` from the repo root, using `OperatingSystem.current().isWindows` to pick `npm.cmd` vs `npm` — the standard way Gradle scripts handle that Windows quirk) and hooked it into `preBuild`.
+- Still explicitly unverified — no Gradle here to confirm `preBuild` actually triggers it, or that `npm` is reachable from Android Studio's own Gradle invocation. Said so directly in the code comment, android/README.md, and TASKS.md rather than presenting it as done-done.
+- Checked off the corresponding TASKS.md item (with that caveat attached) and updated android/README.md's setup instructions and Known Gaps list to match.
+- Left the iOS equivalent (Xcode Run Script phase) open rather than guessing at it just to close out both platforms in one pass.
+- Not yet committed — pending review.

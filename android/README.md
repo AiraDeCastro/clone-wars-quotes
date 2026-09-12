@@ -28,13 +28,13 @@ gradle :core:test
 
 (or `./gradlew :core:test` once the wrapper exists). This runs `QuoteSelectorTest` and `QuoteCorpusTest` without touching the Android SDK at all. If this fails, nothing built on top of it will work either.
 
-Before opening in Android Studio or building `:app`, sync the bundled corpus:
+The bundled corpus asset (`app/src/main/assets/quotes.json`) is kept in sync automatically now: `app/build.gradle.kts` registers a `syncCorpus` task (runs `npm run sync:android` from the repo root) and hooks it into `preBuild`, so it re-copies `corpus/quotes.json` before every build rather than relying on someone remembering the manual step. You can still run it by hand if you just want the asset current without a full build:
 
 ```bash
 npm run sync:android
 ```
 
-(from the repo root — copies `corpus/quotes.json` into `app/src/main/assets/quotes.json`. Manual for now; see Known Gaps.)
+(from the repo root). **The `preBuild` wiring itself is unverified** — it's a standard Gradle idiom (a custom `Exec` task depended on by `preBuild`), but there's no Gradle here to confirm it actually fires, or that `npm` is reliably on `PATH` when Android Studio invokes Gradle rather than a plain shell. If it doesn't fire, `npm run sync:android` by hand is the fallback.
 
 Then, in Android Studio: run the `app` configuration on an emulator or device, and separately add the "Cold Open" widget to a home screen to check it renders.
 
@@ -42,6 +42,7 @@ Then, in Android Studio: run the `app` configuration on an emulator or device, a
 
 - **Not yet built, synced, or run anywhere.** First real task on a machine with the Android toolchain: does this even compile? The `androidx.glance.*` API calls in `ColdOpenWidget.kt` were written from training knowledge and pinned-version docs, **not verified against the actual Glance 1.1.1 API surface** — expect to fix import/signature drift on first build.
 - **No Gradle wrapper checked in** (see above) — generate it locally rather than trusting a hand-written one.
+- **The `syncCorpus` → `preBuild` wiring is unverified** — see above.
 - **No-repeat selection isn't wired into the widget.** `ColdOpenWidget` currently uses plain `randomOrNull()`; `QuoteSelector` exists and is tested but isn't connected, pending the DataStore persistence wiring mentioned above.
 - **No manual-refresh action.** Tapping the widget does nothing yet; wiring a Glance click action that calls `GlanceAppWidget.update()` is still open.
 - **No app icon.** The manifest doesn't reference one yet (no asset catalog exists) — safer than pointing at a mipmap that doesn't exist.

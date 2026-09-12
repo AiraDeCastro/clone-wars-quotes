@@ -30,8 +30,9 @@ Only packaged (MSIX) apps can register as widget providers. The actual **Windows
 The doc's own walkthrough builds a mock weather/counter widget with no packaging-project-level detail beyond one example manifest. Everything below is a reasonable extension, not confirmed against a second source:
 
 - **`EntryPoint="Windows.FullTrustApplication"` and the `runFullTrust` restricted capability** in `Package.appxmanifest` — standard for packaging a full-trust Win32/console exe (the "Desktop Bridge" pattern), but not something the fetched doc itself showed.
-- **The exact `Microsoft.WindowsAppSDK` NuGet version** (`1.6.240923002`) pinned in both `.csproj` files — a plausible current-ish version number, not verified to resolve. Confirm the actual latest stable version on NuGet before restoring.
 - **Adaptive Card styling** — `QuoteCardTemplate` deliberately doesn't hard-code text/background colors, since it's unconfirmed whether/how Widgets Board lets a card override host theming for the "deep space-navy" look in CLAUDE.md's design direction.
+
+The `Microsoft.WindowsAppSDK` NuGet version pin used to be in this list too — it's now confirmed (`2.4.0`, verified against NuGet.org as the current stable release on 2026-09-11, not a preview), so it's no longer a guess. Still worth a quick re-check before restoring if this scaffold sits untouched for a long stretch.
 
 ## A GUID placeholder that must stay consistent
 
@@ -60,4 +61,3 @@ npm run sync:windows
 - **No `.wapproj` packaging project** — see above.
 - **No-repeat selection's in-memory pool won't survive a provider restart** — see the doc comment on `QuoteSelector`.
 - **No app icons/screenshots** — `Package.appxmanifest` references several PNGs that don't exist (see `WidgetProvider.Package/ProviderAssets/README.md`).
-- **`Microsoft.WindowsAppSDK` version pin unverified** — confirm on NuGet before restoring.

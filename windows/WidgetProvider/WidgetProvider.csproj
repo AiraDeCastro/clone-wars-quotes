@@ -15,10 +15,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <!-- Version is a plausible current-ish pick, not verified to restore —
-         confirm the actual latest stable Microsoft.WindowsAppSDK version
-         via NuGet before building. See windows/README.md. -->
-    <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.6.240923002" />
+    <!-- 2.4.0 confirmed as the current latest stable release on NuGet.org
+         as of 2026-09-11 (not a preview/prerelease) — see windows/README.md.
+         Re-check before restoring if this scaffold sits unbuilt for long. -->
+    <PackageReference Include="Microsoft.WindowsAppSDK" Version="2.4.0" />
   </ItemGroup>
 
   <ItemGroup>

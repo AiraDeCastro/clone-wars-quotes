@@ -139,4 +139,11 @@ This repo enforces quality gates and a commit format via git hooks (husky) — s
 - Simplified `scripts/validate-corpus.js` back to pure validation (removed its `--build`/`quotes.compiled.json` placeholder logic, now superseded), updated `package.json`'s `build` script, and swapped the gitignored build artifact from `quotes.compiled.json` to `quotes.sqlite` in `.gitignore` and `.markdownlint-cli2.jsonc`.
 - Verified end-to-end, not just via the test suite: ran `npm run build` for real and inspected the resulting `corpus/quotes.sqlite` file's actual contents with a separate `node:sqlite` query.
 - Logged a new discovered task: no platform (iOS/Android/Windows) actually reads the compiled SQLite file yet — they all still bundle and parse the flat JSON directly. Wiring that up is separate follow-on work, not something to fold into this change.
-- Not yet committed — pending review.
+- Committed as `feat(corpus): implement real JSON to SQLite build step` (commit `a082e48`) and pushed to `origin/master`.
+
+**2026-09-11 — verify the Windows NuGet version pin**
+
+- Asked again to check TASKS.md and pick the next task. Everything else open was still either copyright-blocked (remaining corpus quotes) or toolchain-blocked (iOS/Android/Windows all still can't be built here) — picked the one item that was neither: the Windows scaffold's `Microsoft.WindowsAppSDK` version pin, which TASKS.md and windows/README.md had both explicitly flagged as "a plausible-but-unverified guess."
+- This one didn't need any toolchain to resolve — just needed to actually look it up. Fetched the NuGet.org package page directly rather than continuing to guess: current stable is `2.4.0` (not a preview), last updated 2026-08-13. The scaffold's placeholder (`1.6.240923002`) was genuinely stale.
+- Updated the pin in [windows/WidgetProvider/WidgetProvider.csproj](windows/WidgetProvider/WidgetProvider.csproj), and updated both places in windows/README.md that called it out as unverified, plus TASKS.md — checked off, with a note that it's still just a version number until a real `dotnet restore` happens on a machine with the .NET SDK.
+- Deliberately small, single-purpose change — didn't bundle in unrelated Windows work (e.g. the `.wapproj`, app icons, or the `large` size capability, all still open) just because I was already in that folder.

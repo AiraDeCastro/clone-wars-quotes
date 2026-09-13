@@ -23,7 +23,7 @@ Only packaged (MSIX) apps can register as widget providers. The actual **Windows
 2. Add a project reference to `WidgetProvider`.
 3. Add this to the generated `.wapproj` file: a `PackageReference` for `Microsoft.WindowsAppSDK` with `<IncludeAssets>build</IncludeAssets>` (see the manifest's own comment header for the exact snippet from Microsoft's doc).
 4. Replace the generated `Package.appxmanifest` with (or merge in the `Extensions` from) `WidgetProvider.Package/Package.appxmanifest` in this folder.
-5. Add the referenced images under `Images/` and `ProviderAssets/` — see `WidgetProvider.Package/ProviderAssets/README.md`, none exist yet.
+5. The icon images under `Images/` and `ProviderAssets/` already exist (the "Cold Open Wipe" design) — see `WidgetProvider.Package/ProviderAssets/README.md`. `ProviderAssets/ColdOpen_Screenshot.png` (a screenshot of the widget's content, not an icon) is still missing.
 
 ## Where this scaffold extrapolates beyond the fetched doc
 
@@ -60,4 +60,4 @@ npm run sync:windows
 - **Not yet built, packaged, or deployed anywhere.** First real task: does `WidgetProvider.Core` even compile and pass its tests with a real .NET SDK?
 - **No `.wapproj` packaging project** — see above.
 - **No-repeat selection's in-memory pool won't survive a provider restart** — see the doc comment on `QuoteSelector`.
-- **No app icons/screenshots** — `Package.appxmanifest` references several PNGs that don't exist (see `WidgetProvider.Package/ProviderAssets/README.md`).
+- **App icons done, screenshot still missing.** `StoreLogo.png`, `Square150x150Logo.png`, `Square44x44Logo.png`, and `ProviderAssets/ColdOpen_Icon.png` all exist now (generated via `scripts/gen-app-icon.py` at the repo root — the same design as iOS/Android). `ProviderAssets/ColdOpen_Screenshot.png` is deliberately not — see `ProviderAssets/README.md`. Exact logo sizes (50/150/44) follow the classic UWP convention; unlike the WindowsAppSDK version pin, these haven't been individually re-verified against current Store submission requirements.

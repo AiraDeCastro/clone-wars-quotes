@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Intentionally empty: the "Cold Open Wipe" design is a full-bleed
+     background pattern with no separate foreground mark. Adaptive icon
+     masks (circle, squircle, etc.) only guarantee the inner 72x72dp of the
+     108x108dp canvas stays visible, so a full-bleed diagonal like this
+     belongs in the background layer, which is expected to bleed under the
+     mask, rather than the foreground, which should stay within the safe
+     zone. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108" />

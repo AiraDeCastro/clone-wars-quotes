@@ -67,6 +67,7 @@ To work on this project, a contributor needs:
 - [Git](https://git-scm.com/) + [GitHub CLI (`gh`)](https://cli.github.com/) — repo already initialized and authenticated for this machine.
 - [Node.js](https://nodejs.org/) (v20+) — runs the repo's quality-gate tooling (markdown/corpus lint, corpus tests, commit hooks). Dev-only: this does not give the product a backend, see the offline-first decision above.
 - Run `npm install` once after cloning — this also installs the pre-commit/commit-msg git hooks via husky's `prepare` script.
+- [Python 3](https://www.python.org/) + [Pillow](https://python-pillow.org/) (`pip install Pillow`) — optional, only needed to regenerate the app icon PNGs via `scripts/gen-app-icon.py` if the design ever changes. Not part of the build or the pre-commit pipeline.
 
 **iOS / macOS**
 

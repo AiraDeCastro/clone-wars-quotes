@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- The "Cold Open Wipe" concept, reproduced as vector paths rather than a
+     raster image — the design is just two flat polygons, so this renders
+     pixel-perfect at any density with no PNG needed. Coordinates are the
+     same proportions (984/1024, 944/1024) used in the iOS/macOS and
+     Windows versions of this icon, scaled to the 108x108 adaptive icon
+     viewport. All meaningful content is here in the background layer,
+     since this design is a full-bleed pattern with no separate foreground
+     mark — ic_launcher_foreground.xml is intentionally empty. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <path android:fillColor="#0B0E16" android:pathData="M0,0 L108,0 L108,108 L0,108 Z" />
+    <path android:fillColor="#161D28" android:pathData="M0,0 L108,0 L0,108 Z" />
+    <path android:fillColor="#4C86B0" android:pathData="M103.78,0 L108,0 L108,108 L99.56,108 Z" />
+</vector>

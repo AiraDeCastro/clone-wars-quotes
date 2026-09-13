@@ -27,7 +27,11 @@ Before generating, make sure the bundled corpus resource is current:
 npm run sync:ios
 ```
 
-(from the repo root — copies `corpus/quotes.json` into `ColdOpenCore/Sources/ColdOpenCore/Resources/quotes.json`. Not automated into an Xcode build phase yet; see TASKS.md.)
+(from the repo root — copies `corpus/quotes.json` into `ColdOpenCore/Sources/ColdOpenCore/Resources/quotes.json`.)
+
+**This is staying a manual step on purpose, not just an unfinished automation.** The obvious fix — an XcodeGen `preBuildScripts` Run Script phase on the `ColdOpen`/`ColdOpenMac` targets — almost certainly runs too late to help: those targets depend on the `ColdOpenCore` *package*, and a package's own resources are bundled when the package target itself builds, which happens as part of resolving that dependency, before the depending target's own build phases (including its pre-build scripts) execute. By the time a Run Script phase on `ColdOpen` ran, `ColdOpenCore`'s resource bundle would likely already be sealed from whatever `quotes.json` existed beforehand.
+
+The SPM-native way to actually hook into a package's own build is a [build tool plugin](https://github.com/apple/swift-package-manager/blob/main/Documentation/Plugins.md) — but those have a documented rough edge for exactly this case ([swift-package-manager#7120](https://github.com/apple/swift-package-manager/issues/7120): packages with build-tool-plugin-generated resources don't reliably synthesize a `Bundle.module` accessor), which `QuoteCorpus.load()` depends on. Given that, and given there's no way to test either approach here, the manual step stays — it's simple, it already works, and it's called out at the top of every setup path in this README rather than silently assumed. If someone wants to revisit automating this, a build tool plugin is the right direction, but budget time to work around the `Bundle.module` issue.
 
 ## Verify the logic first, then the app
 

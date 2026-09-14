@@ -38,6 +38,18 @@ BAR_LEFT_BOTTOM = 944 / 1024
 # referenced by a manifest. Keep in sync with:
 # - ios/AppIcon.xcassets/AppIcon.appiconset/Contents.json
 # - windows/WidgetProvider.Package/Package.appxmanifest
+#
+# Windows Square44x44Logo/Square150x150Logo use the documented
+# `<Name>.scale-<N>.png` qualifier convention (auto-discovered by Windows'
+# resource system alongside the manifest's unqualified base reference — no
+# manifest change needed) rather than one bare file, matching what Visual
+# Studio's own asset generator produces and Microsoft's documented minimum
+# (100/200/400% scale) — see:
+# https://learn.microsoft.com/windows/apps/design/iconography/app-icon-construction
+# StoreLogo stays a single 100%-scale file for now: scale variants and the
+# rest of the Store-required asset set (AppList target-size icons, tiles,
+# splash screen) are a separate, larger task gated on the distribution-plan
+# decision in TASKS.md, not something to build out incidentally here.
 OUTPUTS = [
     (16, "ios/AppIcon.xcassets/AppIcon.appiconset/Icon-16.png"),
     (32, "ios/AppIcon.xcassets/AppIcon.appiconset/Icon-32.png"),
@@ -47,8 +59,12 @@ OUTPUTS = [
     (512, "ios/AppIcon.xcassets/AppIcon.appiconset/Icon-512.png"),
     (1024, "ios/AppIcon.xcassets/AppIcon.appiconset/Icon-1024.png"),
     (50, "windows/WidgetProvider.Package/Images/StoreLogo.png"),
-    (150, "windows/WidgetProvider.Package/Images/Square150x150Logo.png"),
-    (44, "windows/WidgetProvider.Package/Images/Square44x44Logo.png"),
+    (44, "windows/WidgetProvider.Package/Images/Square44x44Logo.scale-100.png"),
+    (88, "windows/WidgetProvider.Package/Images/Square44x44Logo.scale-200.png"),
+    (176, "windows/WidgetProvider.Package/Images/Square44x44Logo.scale-400.png"),
+    (150, "windows/WidgetProvider.Package/Images/Square150x150Logo.scale-100.png"),
+    (300, "windows/WidgetProvider.Package/Images/Square150x150Logo.scale-200.png"),
+    (600, "windows/WidgetProvider.Package/Images/Square150x150Logo.scale-400.png"),
     (96, "windows/WidgetProvider.Package/ProviderAssets/ColdOpen_Icon.png"),
 ]
 

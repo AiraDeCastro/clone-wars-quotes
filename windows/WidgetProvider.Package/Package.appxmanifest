@@ -43,6 +43,13 @@
 
   <Applications>
     <Application Id="ColdOpenWidgetProvider" Executable="WidgetProvider\WidgetProvider.exe" EntryPoint="Windows.FullTrustApplication">
+      <!-- Square150x150Logo/Square44x44Logo below name the *unqualified*
+           logical resource — on disk there's no bare Square44x44Logo.png,
+           only Images\Square44x44Logo.scale-{100,200,400}.png (and the
+           150x150 equivalents). Windows' resource system auto-discovers
+           scale-qualified siblings of the name the manifest references; no
+           manifest change is needed to add/remove scale variants. See
+           https://learn.microsoft.com/windows/apps/design/iconography/app-icon-construction -->
       <uap:VisualElements
         DisplayName="Cold Open"
         Description="Randomized Star Wars: The Clone Wars cold-open quotes, as a Windows widget."

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>com.apple.security.application-groups</key>
+    <array>
+        <!-- Same identifier as the iOS widget's entitlements — one App
+             Group shared across both platforms under one Apple Developer
+             team, so ColdOpenWidget.swift's shared source needs no
+             platform-conditional (#if os(...)) branch for this. -->
+        <string>group.com.coldopen.app</string>
+    </array>
+</dict>
+</plist>

@@ -3,31 +3,46 @@ import Foundation
 /// Picks quotes at random without repeating one until the whole corpus has
 /// been shown once, then reshuffles.
 ///
-/// NOTE: this only tracks state in memory. A WidgetKit extension process is
-/// short-lived and effectively stateless between timeline reloads, so using
-/// this directly inside a `TimelineProvider` will NOT stay no-repeat across
-/// reloads — that needs the "already shown" set persisted somewhere shared
-/// between reloads (e.g. an App Group `UserDefaults` suite). Tracked as an
-/// open task in TASKS.md; this type is correct and unit-tested, it just
-/// isn't wired to persistent storage yet.
+/// A WidgetKit extension process is short-lived and effectively stateless
+/// between timeline reloads, so this class stays free of that persistence
+/// concern — it exposes `shownTexts` so a caller can persist it (e.g. into
+/// an App Group `UserDefaults` suite shared between the app and widget
+/// extension) and pass it back in as `alreadyShown` on the next
+/// `TimelineProvider` call, keyed on `Quote.text` — the same uniqueness key
+/// the corpus validator already enforces (`scripts/validate-corpus.js`
+/// rejects duplicate `text` values), since `Quote` has no separate numeric
+/// id at this layer. The actual `UserDefaults`/App Group read-write lives
+/// in `ColdOpenWidget.swift`, not here — see TASKS.md for that wiring, and
+/// why the App Group's actual registration (Signing & Capabilities, tied to
+/// a real Apple ID) is a separate, interactive step this scaffold can
+/// prepare for but not complete.
 public final class QuoteSelector {
     private let allQuotes: [Quote]
     private var pool: [Quote]
+    private var shown: Set<String>
 
-    public init(quotes: [Quote]) {
+    public init(quotes: [Quote], alreadyShown: Set<String> = []) {
         self.allQuotes = quotes
-        self.pool = quotes
+        self.pool = quotes.filter { !alreadyShown.contains($0.text) }
+        self.shown = alreadyShown
     }
 
+    /// Text of every quote drawn since construction (or resumed via `alreadyShown`).
+    public var shownTexts: Set<String> { shown }
+
     /// Returns a random quote, removing it from the pool. Refills the pool
-    /// from the full corpus once it's exhausted. Returns `nil` only if the
-    /// corpus itself is empty.
+    /// (and clears `shownTexts`) once it's exhausted — including
+    /// immediately, if resuming with every quote already marked shown.
+    /// Returns `nil` only if the corpus itself is empty.
     public func next() -> Quote? {
         if pool.isEmpty {
             pool = allQuotes
+            shown.removeAll()
         }
         guard !pool.isEmpty else { return nil }
         let index = Int.random(in: 0..<pool.count)
-        return pool.remove(at: index)
+        let quote = pool.remove(at: index)
+        shown.insert(quote.text)
+        return quote
     }
 }

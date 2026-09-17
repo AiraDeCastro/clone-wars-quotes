@@ -47,6 +47,12 @@ targets:
         PRODUCT_NAME: "Cold Open Widget"
         SWIFT_VERSION: "5.0"
         GENERATE_INFOPLIST_FILE: false
+        # CODE_SIGN_ENTITLEMENTS references the App Group used to persist
+        # QuoteSelector's "already shown" state — the file exists, but the
+        # App Group itself isn't registered anywhere yet (Signing &
+        # Capabilities, tied to a real Apple ID). See ColdOpenWidget.swift's
+        # WidgetAppGroup doc comment and ios/README.md.
+        CODE_SIGN_ENTITLEMENTS: ColdOpenWidget/ColdOpenWidget.entitlements
 
   # macOS targets below compile the SAME ColdOpen/ and ColdOpenWidget/
   # source directories as the iOS targets above — not a copy. Nothing in
@@ -93,3 +99,4 @@ targets:
         SWIFT_VERSION: "5.0"
         GENERATE_INFOPLIST_FILE: false
         ENABLE_HARDENED_RUNTIME: true
+        CODE_SIGN_ENTITLEMENTS: ColdOpenWidgetMac/ColdOpenWidgetMac.entitlements

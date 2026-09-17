@@ -10,7 +10,7 @@ This is a source-level scaffold for the Android app + Jetpack Glance widget, wri
 
 ## Unlike iOS: no separate widget process
 
-An Android home-screen widget isn't a separate installable target the way an iOS WidgetKit extension is — it's a `BroadcastReceiver` (`ColdOpenWidgetReceiver`) plus Glance composable code living inside the same `:app` module and process. That's architecturally simpler in one specific way: persisting `QuoteSelector`'s "already shown" state across widget updates just needs `DataStore`/`SharedPreferences`, not an App Group-style shared container. Not wired up yet — see Known Gaps.
+An Android home-screen widget isn't a separate installable target the way an iOS WidgetKit extension is — it's a `BroadcastReceiver` (`ColdOpenWidgetReceiver`) plus Glance composable code living inside the same `:app` module and process. That's architecturally simpler in one specific way: persisting `QuoteSelector`'s "already shown" state across widget updates just needs `SharedPreferences`, not an App Group-style shared container — and that's now actually wired up (see `ColdOpenWidget.loadRandomQuote`), not just noted as possible.
 
 ## Deliberately missing: the Gradle wrapper
 
@@ -43,7 +43,7 @@ Then, in Android Studio: run the `app` configuration on an emulator or device, a
 - **Not yet built, synced, or run anywhere.** First real task on a machine with the Android toolchain: does this even compile? The `androidx.glance.*` API calls in `ColdOpenWidget.kt` were written from training knowledge and pinned-version docs, **not verified against the actual Glance 1.1.1 API surface** — expect to fix import/signature drift on first build.
 - **No Gradle wrapper checked in** (see above) — generate it locally rather than trusting a hand-written one.
 - **The `syncCorpus` → `preBuild` wiring is unverified** — see above.
-- **No-repeat selection isn't wired into the widget.** `ColdOpenWidget` currently uses plain `randomOrNull()`; `QuoteSelector` exists and is tested but isn't connected, pending the DataStore persistence wiring mentioned above.
+- **No-repeat selection is now wired into the widget, with persistence.** `ColdOpenWidget.loadRandomQuote` uses `:core`'s `QuoteSelector`, reading/writing the "already shown" set via `SharedPreferences` around each draw. `QuoteSelector` gained an `alreadyShown` constructor param and a `shownTexts` property to support this, plus 4 new unit tests — all still unverified by an actual compiler/test run (no Kotlin toolchain here), traced by hand instead.
 - **No manual-refresh action.** Tapping the widget does nothing yet; wiring a Glance click action that calls `GlanceAppWidget.update()` is still open.
 - **App icon done.** Implemented as adaptive-icon vector drawables (`res/drawable/ic_launcher_background.xml` + an empty foreground layer, wired via `res/mipmap-anydpi-v26/ic_launcher.xml`) reproducing the "Cold Open Wipe + Starfield" concept as flat paths, including the three star flecks as circle paths — no PNG needed since `minSdk 26` already requires adaptive icon support. `AndroidManifest.xml` now sets `android:icon`/`android:roundIcon`. Not yet confirmed inside Android Studio.
 - **No ktlint yet** — tracked as a follow-on once this project is confirmed to actually build (see root TASKS.md "Tooling & Quality Gates").

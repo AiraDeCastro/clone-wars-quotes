@@ -21,14 +21,19 @@ import androidx.glance.text.TextStyle
 import androidx.glance.unit.ColorProvider
 import com.coldopen.core.Quote
 import com.coldopen.core.QuoteCorpus
-import java.io.IOException
+import com.coldopen.core.QuoteSelector
 
 /**
- * Renders one quote per Glance update. Random selection uses plain
- * `randomOrNull()`, not :core's no-repeat `QuoteSelector` — wiring that in
- * needs persisted "already shown" state (see QuoteSelector's doc comment
- * and TASKS.md). Manual refresh (a tap action that re-triggers
- * [GlanceAppWidget.update]) isn't wired yet either.
+ * Renders one quote per Glance update, using :core's no-repeat
+ * `QuoteSelector`. The "already shown" set is persisted in
+ * `SharedPreferences` across process restarts — unlike iOS's WidgetKit
+ * extension (a separate, short-lived process), a Glance widget runs in the
+ * app's own process, so this is a plain read-in/write-out, not a
+ * cross-process problem. See `QuoteSelector`'s doc comment for why the
+ * persistence itself lives here in `:app` rather than in `:core`.
+ *
+ * Manual refresh (a tap action that re-triggers [GlanceAppWidget.update])
+ * still isn't wired yet.
  */
 class ColdOpenWidget : GlanceAppWidget() {
 
@@ -39,15 +44,29 @@ class ColdOpenWidget : GlanceAppWidget() {
         }
     }
 
-    private fun loadRandomQuote(context: Context): Quote = try {
-        context.assets.open(CORPUS_ASSET_NAME).use { QuoteCorpus.load(it) }.randomOrNull()
-            ?: FALLBACK_QUOTE
-    } catch (e: IOException) {
-        FALLBACK_QUOTE
+    private fun loadRandomQuote(context: Context): Quote {
+        val quotes = try {
+            context.assets.open(CORPUS_ASSET_NAME).use { QuoteCorpus.load(it) }
+        } catch (e: Exception) {
+            // Covers both a missing/unreadable asset (IOException) and a
+            // malformed one (org.json.JSONException isn't an IOException) —
+            // the widget should never crash or render fully empty.
+            return FALLBACK_QUOTE
+        }
+        if (quotes.isEmpty()) return FALLBACK_QUOTE
+
+        val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+        val alreadyShown = prefs.getStringSet(PREF_SHOWN_TEXTS, emptySet()) ?: emptySet()
+        val selector = QuoteSelector(quotes, alreadyShown = alreadyShown)
+        val quote = selector.next() ?: return FALLBACK_QUOTE
+        prefs.edit().putStringSet(PREF_SHOWN_TEXTS, selector.shownTexts).apply()
+        return quote
     }
 
     companion object {
         const val CORPUS_ASSET_NAME = "quotes.json"
+        const val PREFS_NAME = "cold_open_widget"
+        const val PREF_SHOWN_TEXTS = "shown_quote_texts"
 
         // Rendered if the bundled corpus can't be read at all.
         val FALLBACK_QUOTE = Quote(

@@ -7,13 +7,19 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.glance.GlanceId
 import androidx.glance.GlanceModifier
+import androidx.glance.action.ActionParameters
+import androidx.glance.action.clickable
 import androidx.glance.appwidget.GlanceAppWidget
 import androidx.glance.appwidget.GlanceAppWidgetReceiver
+import androidx.glance.appwidget.action.ActionCallback
+import androidx.glance.appwidget.action.actionRunCallback
 import androidx.glance.appwidget.provideContent
 import androidx.glance.background
 import androidx.glance.layout.Alignment
 import androidx.glance.layout.Column
+import androidx.glance.layout.Row
 import androidx.glance.layout.fillMaxSize
+import androidx.glance.layout.fillMaxWidth
 import androidx.glance.layout.padding
 import androidx.glance.text.FontWeight
 import androidx.glance.text.Text
@@ -32,8 +38,10 @@ import com.coldopen.core.QuoteSelector
  * cross-process problem. See `QuoteSelector`'s doc comment for why the
  * persistence itself lives here in `:app` rather than in `:core`.
  *
- * Manual refresh (a tap action that re-triggers [GlanceAppWidget.update])
- * still isn't wired yet.
+ * Manual refresh is [RefreshAction] below — its `onAction` calls
+ * [GlanceAppWidget.update], which re-runs [provideGlance] and therefore
+ * [loadRandomQuote] again, so the refresh logic doesn't need to be
+ * duplicated in the action callback itself.
  */
 class ColdOpenWidget : GlanceAppWidget() {
 
@@ -96,10 +104,29 @@ private fun ColdOpenWidgetContent(quote: Quote) {
                 fontSize = 15.sp,
             ),
         )
-        Text(
-            text = "${quote.episodeTitle} · S${quote.season}E${quote.episode}",
-            style = TextStyle(color = ColorProvider(Color(0xFFB7C0D8)), fontSize = 11.sp),
-        )
+        Row(modifier = GlanceModifier.fillMaxWidth()) {
+            Text(
+                text = "${quote.episodeTitle} · S${quote.season}E${quote.episode}",
+                style = TextStyle(color = ColorProvider(Color(0xFFB7C0D8)), fontSize = 11.sp),
+                modifier = GlanceModifier.defaultWeight(),
+            )
+            Text(
+                text = "New quote",
+                style = TextStyle(color = ColorProvider(Color(0xFFB7C0D8)), fontSize = 11.sp),
+                modifier = GlanceModifier.clickable(onClick = actionRunCallback<RefreshAction>()),
+            )
+        }
+    }
+}
+
+/**
+ * Manual refresh. `update()` re-runs [ColdOpenWidget.provideGlance], which
+ * draws the next no-repeat quote via `loadRandomQuote` — this callback just
+ * triggers that, it doesn't duplicate the draw logic itself.
+ */
+class RefreshAction : ActionCallback {
+    override suspend fun onAction(context: Context, glanceId: GlanceId, parameters: ActionParameters) {
+        ColdOpenWidget().update(context, glanceId)
     }
 }
 

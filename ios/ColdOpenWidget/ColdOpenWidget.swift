@@ -1,3 +1,4 @@
+import AppIntents
 import WidgetKit
 import SwiftUI
 import ColdOpenCore
@@ -48,7 +49,9 @@ struct ColdOpenWidgetProvider: TimelineProvider {
     }
 
     func getTimeline(in context: Context, completion: @escaping (Timeline<QuoteEntry>) -> Void) {
-        // Manual refresh only for now (TASKS.md M1).
+        // Reload policy stays .never — there's no scheduled auto-refresh yet
+        // (that's P1/M3). Manual refresh is RefreshQuoteIntent below, which
+        // forces a new getTimeline call via WidgetCenter.reloadTimelines.
         let entry = QuoteEntry(date: Date(), quote: Self.nextQuote())
         completion(Timeline(entries: [entry], policy: .never))
     }
@@ -73,6 +76,19 @@ struct ColdOpenWidgetProvider: TimelineProvider {
     }
 }
 
+/// Manual refresh, as a widget button action (iOS 17+ interactive widgets).
+/// `perform()` just asks WidgetKit to re-run `getTimeline` — the actual
+/// no-repeat draw already lives in `ColdOpenWidgetProvider.nextQuote()`, so
+/// this intent doesn't duplicate that logic, it just triggers it again.
+struct RefreshQuoteIntent: AppIntent {
+    static var title: LocalizedStringResource = "New quote"
+
+    func perform() async throws -> some IntentResult {
+        WidgetCenter.shared.reloadTimelines(ofKind: ColdOpenWidget.kind)
+        return .result()
+    }
+}
+
 struct ColdOpenWidgetView: View {
     let entry: QuoteEntry
 
@@ -84,9 +100,18 @@ struct ColdOpenWidgetView: View {
                     .foregroundStyle(.white)
                     .minimumScaleFactor(0.8)
                 Spacer(minLength: 4)
-                Text("\(quote.episodeTitle) · S\(quote.season)E\(quote.episode)")
-                    .font(.caption2)
-                    .foregroundStyle(.white.opacity(0.6))
+                HStack {
+                    Text("\(quote.episodeTitle) · S\(quote.season)E\(quote.episode)")
+                        .font(.caption2)
+                        .foregroundStyle(.white.opacity(0.6))
+                    Spacer()
+                    Button(intent: RefreshQuoteIntent()) {
+                        Image(systemName: "arrow.clockwise")
+                            .font(.caption2)
+                            .foregroundStyle(.white.opacity(0.6))
+                    }
+                    .buttonStyle(.plain)
+                }
             } else {
                 Text("No quote available.")
                     .font(.caption)
@@ -101,10 +126,10 @@ struct ColdOpenWidgetView: View {
 }
 
 struct ColdOpenWidget: Widget {
-    let kind = "ColdOpenWidget"
+    static let kind = "ColdOpenWidget"
 
     var body: some WidgetConfiguration {
-        StaticConfiguration(kind: kind, provider: ColdOpenWidgetProvider()) { entry in
+        StaticConfiguration(kind: Self.kind, provider: ColdOpenWidgetProvider()) { entry in
             ColdOpenWidgetView(entry: entry)
         }
         .configurationDisplayName("Cold Open")

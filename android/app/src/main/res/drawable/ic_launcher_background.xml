@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- The "Cold Open Wipe" concept, reproduced as vector paths rather than a
-     raster image — the design is just two flat polygons, so this renders
-     pixel-perfect at any density with no PNG needed. Coordinates are the
-     same proportions (984/1024, 944/1024) used in the iOS/macOS and
-     Windows versions of this icon, scaled to the 108x108 adaptive icon
-     viewport. All meaningful content is here in the background layer,
-     since this design is a full-bleed pattern with no separate foreground
-     mark — ic_launcher_foreground.xml is intentionally empty. -->
+<!-- The "Cold Open Wipe + Starfield" concept, reproduced as vector paths
+     rather than a raster image — flat shapes only, so this renders
+     pixel-perfect at any density with no PNG needed. The wipe coordinates
+     are the same proportions (984/1024, 944/1024) used in the iOS/macOS
+     and Windows versions of this icon, scaled to the 108x108 adaptive icon
+     viewport; likewise the three star circles (same 190/230/10,
+     320/650/7, 110/560/6 fractions, verified at small sizes in the
+     starfield-concepts proposal — see scripts/gen-app-icon.py for the
+     canonical values). All meaningful content is here in the background
+     layer, since this design is a full-bleed pattern with no separate
+     foreground mark — ic_launcher_foreground.xml is intentionally empty. -->
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
     android:width="108dp"
     android:height="108dp"
@@ -14,5 +17,8 @@
     android:viewportHeight="108">
     <path android:fillColor="#0B0E16" android:pathData="M0,0 L108,0 L108,108 L0,108 Z" />
     <path android:fillColor="#161D28" android:pathData="M0,0 L108,0 L0,108 Z" />
+    <path android:fillColor="#9C8550" android:pathData="M18.99,24.26 A1.05,1.05 0 1 1 21.09,24.26 A1.05,1.05 0 1 1 18.99,24.26 Z" />
+    <path android:fillColor="#9C8550" android:pathData="M33.01,68.55 A0.74,0.74 0 1 1 34.49,68.55 A0.74,0.74 0 1 1 33.01,68.55 Z" />
+    <path android:fillColor="#9C8550" android:pathData="M10.97,59.06 A0.63,0.63 0 1 1 12.23,59.06 A0.63,0.63 0 1 1 10.97,59.06 Z" />
     <path android:fillColor="#4C86B0" android:pathData="M103.78,0 L108,0 L108,108 L99.56,108 Z" />
 </vector>

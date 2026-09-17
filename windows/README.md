@@ -23,7 +23,7 @@ Only packaged (MSIX) apps can register as widget providers. The actual **Windows
 2. Add a project reference to `WidgetProvider`.
 3. Add this to the generated `.wapproj` file: a `PackageReference` for `Microsoft.WindowsAppSDK` with `<IncludeAssets>build</IncludeAssets>` (see the manifest's own comment header for the exact snippet from Microsoft's doc).
 4. Replace the generated `Package.appxmanifest` with (or merge in the `Extensions` from) `WidgetProvider.Package/Package.appxmanifest` in this folder.
-5. The icon images under `Images/` and `ProviderAssets/` already exist (the "Cold Open Wipe" design) — see `WidgetProvider.Package/ProviderAssets/README.md`. `ProviderAssets/ColdOpen_Screenshot.png` (a screenshot of the widget's content, not an icon) is still missing.
+5. The icon images under `Images/` and `ProviderAssets/` already exist (the "Cold Open Wipe + Starfield" design) — see `WidgetProvider.Package/ProviderAssets/README.md`. `ProviderAssets/ColdOpen_Screenshot.png` (a screenshot of the widget's content, not an icon) is still missing.
 
 ## Where this scaffold extrapolates beyond the fetched doc
 

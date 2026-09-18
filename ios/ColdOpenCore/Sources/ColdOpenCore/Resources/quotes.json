@@ -1,9 +1,905 @@
 [
   {
-    "text": "Heroes are made by the path they choose, not the powers they are graced with.",
+    "text": "Great leaders inspire greatness in others.",
+    "episodeTitle": "Ambush",
+    "season": 1,
+    "episode": 1,
+    "arc": "Ambush"
+  },
+  {
+    "text": "Belief is not a matter of choice, but of conviction.",
+    "episodeTitle": "Rising Malevolence",
+    "season": 1,
+    "episode": 2,
+    "arc": "Malevolence"
+  },
+  {
+    "text": "Easy is the path to wisdom for those not blinded by ego.",
+    "episodeTitle": "Shadow of Malevolence",
+    "season": 1,
+    "episode": 3,
+    "arc": "Malevolence"
+  },
+  {
+    "text": "A plan is only as good as those who see it through.",
+    "episodeTitle": "Destroy Malevolence",
+    "season": 1,
+    "episode": 4,
+    "arc": "Malevolence"
+  },
+  {
+    "text": "The best confidence builder is experience.",
     "episodeTitle": "Rookies",
     "season": 1,
     "episode": 5,
-    "arc": "Malevolence"
+    "arc": "Rookies"
+  },
+  {
+    "text": "Trust in your friends, and they'll have reason to trust in you.",
+    "episodeTitle": "Downfall of a Droid",
+    "season": 1,
+    "episode": 6,
+    "arc": "Downfall of a Droid"
+  },
+  {
+    "text": "You hold onto friends by keeping your heart a little softer than your head.",
+    "episodeTitle": "Duel of the Droids",
+    "season": 1,
+    "episode": 7,
+    "arc": "Downfall of a Droid"
+  },
+  {
+    "text": "Heroes are made by the times.",
+    "episodeTitle": "Bombad Jedi",
+    "season": 1,
+    "episode": 8,
+    "arc": "Bombad Jedi"
+  },
+  {
+    "text": "Ignore your instincts at your peril.",
+    "episodeTitle": "Cloak of Darkness",
+    "season": 1,
+    "episode": 9,
+    "arc": "Cloak of Darkness"
+  },
+  {
+    "text": "Most powerful is he who controls his own power.",
+    "episodeTitle": "Lair of Grievous",
+    "season": 1,
+    "episode": 10,
+    "arc": "Lair of Grievous"
+  },
+  {
+    "text": "The winding path to peace is always a worthy one, regardless of how many turns it takes.",
+    "episodeTitle": "Dooku Captured",
+    "season": 1,
+    "episode": 11,
+    "arc": "Dooku Captured"
+  },
+  {
+    "text": "Fail with honor rather than succeed by fraud.",
+    "episodeTitle": "The Gungan General",
+    "season": 1,
+    "episode": 12,
+    "arc": "Dooku Captured"
+  },
+  {
+    "text": "Greed and fear of loss are the roots that lead to the tree of evil.",
+    "episodeTitle": "Jedi Crash",
+    "season": 1,
+    "episode": 13,
+    "arc": "Jedi Crash"
+  },
+  {
+    "text": "When surrounded by war, one must eventually choose a side.",
+    "episodeTitle": "Defenders of Peace",
+    "season": 1,
+    "episode": 14,
+    "arc": "Jedi Crash"
+  },
+  {
+    "text": "Arrogance diminishes wisdom.",
+    "episodeTitle": "Trespass",
+    "season": 1,
+    "episode": 15,
+    "arc": "Trespass"
+  },
+  {
+    "text": "Truth enlightens the mind, but won't always bring happiness to your heart.",
+    "episodeTitle": "The Hidden Enemy",
+    "season": 1,
+    "episode": 16,
+    "arc": "The Hidden Enemy"
+  },
+  {
+    "text": "Fear is a disease; hope is its only cure.",
+    "episodeTitle": "Blue Shadow Virus",
+    "season": 1,
+    "episode": 17,
+    "arc": "Blue Shadow Virus"
+  },
+  {
+    "text": "A single chance is a galaxy of hope.",
+    "episodeTitle": "Mystery of a Thousand Moons",
+    "season": 1,
+    "episode": 18,
+    "arc": "Blue Shadow Virus"
+  },
+  {
+    "text": "It is a rough road that leads to the heights of greatness.",
+    "episodeTitle": "Storm Over Ryloth",
+    "season": 1,
+    "episode": 19,
+    "arc": "Ryloth"
+  },
+  {
+    "text": "The costs of war can never be truly accounted for.",
+    "episodeTitle": "Innocents of Ryloth",
+    "season": 1,
+    "episode": 20,
+    "arc": "Ryloth"
+  },
+  {
+    "text": "Compromise is a virtue to be cultivated, not a weakness to be despised.",
+    "episodeTitle": "Liberty on Ryloth",
+    "season": 1,
+    "episode": 21,
+    "arc": "Ryloth"
+  },
+  {
+    "text": "A secret shared is a trust formed.",
+    "episodeTitle": "Hostage Crisis",
+    "season": 1,
+    "episode": 22,
+    "arc": "Hostage Crisis"
+  },
+  {
+    "text": "A lesson learned is a lesson earned.",
+    "episodeTitle": "Holocron Heist",
+    "season": 2,
+    "episode": 1,
+    "arc": "Holocron Heist"
+  },
+  {
+    "text": "Overconfidence is the most dangerous form of carelessness.",
+    "episodeTitle": "Cargo of Doom",
+    "season": 2,
+    "episode": 2,
+    "arc": "Holocron Heist"
+  },
+  {
+    "text": "The first step to correcting a mistake is patience.",
+    "episodeTitle": "Children of the Force",
+    "season": 2,
+    "episode": 3,
+    "arc": "Holocron Heist"
+  },
+  {
+    "text": "A true heart should never be doubted.",
+    "episodeTitle": "Senate Spy",
+    "season": 2,
+    "episode": 4,
+    "arc": "Senate Spy"
+  },
+  {
+    "text": "Believe in yourself or no one else will.",
+    "episodeTitle": "Landing at Point Rain",
+    "season": 2,
+    "episode": 5,
+    "arc": "Geonosis Factory"
+  },
+  {
+    "text": "No gift is more precious than trust.",
+    "episodeTitle": "Weapons Factory",
+    "season": 2,
+    "episode": 6,
+    "arc": "Geonosis Factory"
+  },
+  {
+    "text": "Sometimes, accepting help is harder than offering it.",
+    "episodeTitle": "Legacy of Terror",
+    "season": 2,
+    "episode": 7,
+    "arc": "Geonosian Zombies"
+  },
+  {
+    "text": "Attachment is not compassion.",
+    "episodeTitle": "Brain Invaders",
+    "season": 2,
+    "episode": 8,
+    "arc": "Geonosian Zombies"
+  },
+  {
+    "text": "For everything you gain, you lose something else.",
+    "episodeTitle": "Grievous Intrigue",
+    "season": 2,
+    "episode": 9,
+    "arc": "Grievous Intrigue"
+  },
+  {
+    "text": "It is the quest for honor that makes one honorable.",
+    "episodeTitle": "The Deserter",
+    "season": 2,
+    "episode": 10,
+    "arc": "The Deserter"
+  },
+  {
+    "text": "Easy isn't always simple.",
+    "episodeTitle": "Lightsaber Lost",
+    "season": 2,
+    "episode": 11,
+    "arc": "Lightsaber Lost"
+  },
+  {
+    "text": "If you ignore the past, you jeopardize the future.",
+    "episodeTitle": "The Mandalore Plot",
+    "season": 2,
+    "episode": 12,
+    "arc": "Mandalore"
+  },
+  {
+    "text": "Fear not for the future, weep not for the past.",
+    "episodeTitle": "Voyage of Temptation",
+    "season": 2,
+    "episode": 13,
+    "arc": "Mandalore"
+  },
+  {
+    "text": "In war, truth is the first casualty.",
+    "episodeTitle": "Duchess of Mandalore",
+    "season": 2,
+    "episode": 14,
+    "arc": "Mandalore"
+  },
+  {
+    "text": "Searching for the truth is easy. Accepting the truth is hard.",
+    "episodeTitle": "Senate Murders",
+    "season": 2,
+    "episode": 15,
+    "arc": "Senate Murders"
+  },
+  {
+    "text": "A wise leader knows when to follow.",
+    "episodeTitle": "Cat and Mouse",
+    "season": 2,
+    "episode": 16,
+    "arc": "Cat and Mouse"
+  },
+  {
+    "text": "Courage makes heroes, but trust builds friendships.",
+    "episodeTitle": "Bounty Hunters",
+    "season": 2,
+    "episode": 17,
+    "arc": "Bounty Hunters"
+  },
+  {
+    "text": "Choose what is right, not what is easy.",
+    "episodeTitle": "The Zillo Beast",
+    "season": 2,
+    "episode": 18,
+    "arc": "Zillo Beast"
+  },
+  {
+    "text": "The most dangerous beast is the beast within.",
+    "episodeTitle": "The Zillo Beast Strikes Back",
+    "season": 2,
+    "episode": 19,
+    "arc": "Zillo Beast"
+  },
+  {
+    "text": "Who my father was matters less than my memory of him.",
+    "episodeTitle": "Death Trap",
+    "season": 2,
+    "episode": 20,
+    "arc": "Boba Fett Revenge"
+  },
+  {
+    "text": "Adversity is a friendship's truest test.",
+    "episodeTitle": "R2 Come Home",
+    "season": 2,
+    "episode": 21,
+    "arc": "Boba Fett Revenge"
+  },
+  {
+    "text": "Revenge is a confession of pain.",
+    "episodeTitle": "Lethal Trackdown",
+    "season": 2,
+    "episode": 22,
+    "arc": "Boba Fett Revenge"
+  },
+  {
+    "text": "Brothers in arms are brothers for life.",
+    "episodeTitle": "Clone Cadets",
+    "season": 3,
+    "episode": 1,
+    "arc": "Kamino Defense"
+  },
+  {
+    "text": "Fighting a war tests a soldier's skills, defending his home tests a soldier's heart.",
+    "episodeTitle": "ARC Troopers",
+    "season": 3,
+    "episode": 2,
+    "arc": "Kamino Defense"
+  },
+  {
+    "text": "Where there's a will, there's a way.",
+    "episodeTitle": "Supply Lines",
+    "season": 3,
+    "episode": 3,
+    "arc": "Supply Lines"
+  },
+  {
+    "text": "A child stolen is a hope lost.",
+    "episodeTitle": "Sphere of Influence",
+    "season": 3,
+    "episode": 4,
+    "arc": "Sphere of Influence"
+  },
+  {
+    "text": "The challenge of hope is to overcome corruption.",
+    "episodeTitle": "Corruption",
+    "season": 3,
+    "episode": 5,
+    "arc": "Corruption"
+  },
+  {
+    "text": "Those who enforce the law must obey the law.",
+    "episodeTitle": "The Academy",
+    "season": 3,
+    "episode": 6,
+    "arc": "Corruption"
+  },
+  {
+    "text": "The future has many paths - choose wisely.",
+    "episodeTitle": "Assassin",
+    "season": 3,
+    "episode": 7,
+    "arc": "Assassin"
+  },
+  {
+    "text": "A failure in planning is a plan for failure.",
+    "episodeTitle": "Evil Plans",
+    "season": 3,
+    "episode": 8,
+    "arc": "Hunt for Ziro"
+  },
+  {
+    "text": "Love comes in all shapes and sizes.",
+    "episodeTitle": "Hunt for Ziro",
+    "season": 3,
+    "episode": 9,
+    "arc": "Hunt for Ziro"
+  },
+  {
+    "text": "Fear is a great motivator.",
+    "episodeTitle": "Heroes on Both Sides",
+    "season": 3,
+    "episode": 10,
+    "arc": "Pursuit of Peace"
+  },
+  {
+    "text": "Truth can strike down the spectre of fear.",
+    "episodeTitle": "Pursuit of Peace",
+    "season": 3,
+    "episode": 11,
+    "arc": "Pursuit of Peace"
+  },
+  {
+    "text": "The swiftest path to destruction is through vengeance.",
+    "episodeTitle": "Nightsisters",
+    "season": 3,
+    "episode": 12,
+    "arc": "Nightsisters"
+  },
+  {
+    "text": "Evil is not born, it is taught.",
+    "episodeTitle": "Monster",
+    "season": 3,
+    "episode": 13,
+    "arc": "Nightsisters"
+  },
+  {
+    "text": "The path to evil may bring great power, but not loyalty.",
+    "episodeTitle": "Witches of the Mist",
+    "season": 3,
+    "episode": 14,
+    "arc": "Nightsisters"
+  },
+  {
+    "text": "Balance is found in the one who faces his guilt.",
+    "episodeTitle": "Overlords",
+    "season": 3,
+    "episode": 15,
+    "arc": "Mortis"
+  },
+  {
+    "text": "He who surrenders hope, surrenders life.",
+    "episodeTitle": "Altar of Mortis",
+    "season": 3,
+    "episode": 16,
+    "arc": "Mortis"
+  },
+  {
+    "text": "He who seeks to control fate shall never find peace.",
+    "episodeTitle": "Ghosts of Mortis",
+    "season": 3,
+    "episode": 17,
+    "arc": "Mortis"
+  },
+  {
+    "text": "Adaptation is the key to survival.",
+    "episodeTitle": "The Citadel",
+    "season": 3,
+    "episode": 18,
+    "arc": "The Citadel"
+  },
+  {
+    "text": "Anything that can go wrong will.",
+    "episodeTitle": "Counter Attack",
+    "season": 3,
+    "episode": 19,
+    "arc": "The Citadel"
+  },
+  {
+    "text": "Without honor, victory is hollow.",
+    "episodeTitle": "Citadel Rescue",
+    "season": 3,
+    "episode": 20,
+    "arc": "The Citadel"
+  },
+  {
+    "text": "Without humility, courage is a dangerous game.",
+    "episodeTitle": "Padawan Lost",
+    "season": 3,
+    "episode": 21,
+    "arc": "Trandoshan Hunters"
+  },
+  {
+    "text": "A great student is what the teacher hopes to be.",
+    "episodeTitle": "Wookiee Hunt",
+    "season": 3,
+    "episode": 22,
+    "arc": "Trandoshan Hunters"
+  },
+  {
+    "text": "When destiny calls, the chosen have no choice.",
+    "episodeTitle": "Water War",
+    "season": 4,
+    "episode": 1,
+    "arc": "Mon Calamari"
+  },
+  {
+    "text": "Only through fire is a strong sword forged.",
+    "episodeTitle": "Gungan Attack",
+    "season": 4,
+    "episode": 2,
+    "arc": "Mon Calamari"
+  },
+  {
+    "text": "Crowns are inherited, kingdoms are earned.",
+    "episodeTitle": "Prisoners",
+    "season": 4,
+    "episode": 3,
+    "arc": "Mon Calamari"
+  },
+  {
+    "text": "Who a person truly is cannot be seen with the eye.",
+    "episodeTitle": "Shadow Warrior",
+    "season": 4,
+    "episode": 4,
+    "arc": "Mon Calamari"
+  },
+  {
+    "text": "Understanding is honoring the truth beneath the surface.",
+    "episodeTitle": "Mercy Mission",
+    "season": 4,
+    "episode": 5,
+    "arc": "Mercy Mission"
+  },
+  {
+    "text": "Who's the more foolish, the fool or the fool who follows him?",
+    "episodeTitle": "Nomad Droids",
+    "season": 4,
+    "episode": 6,
+    "arc": "Mercy Mission"
+  },
+  {
+    "text": "The first step towards loyalty is trust.",
+    "episodeTitle": "Darkness on Umbara",
+    "season": 4,
+    "episode": 7,
+    "arc": "Umbara"
+  },
+  {
+    "text": "The path of ignorance is guided by fear.",
+    "episodeTitle": "The General",
+    "season": 4,
+    "episode": 8,
+    "arc": "Umbara"
+  },
+  {
+    "text": "The wise man leads, the strong man follows.",
+    "episodeTitle": "Plan of Dissent",
+    "season": 4,
+    "episode": 9,
+    "arc": "Umbara"
+  },
+  {
+    "text": "Our actions define our legacy.",
+    "episodeTitle": "Carnage of Krell",
+    "season": 4,
+    "episode": 10,
+    "arc": "Umbara"
+  },
+  {
+    "text": "Where we are going always reflects where we came from.",
+    "episodeTitle": "Kidnapped",
+    "season": 4,
+    "episode": 11,
+    "arc": "Zygerrian Slavers"
+  },
+  {
+    "text": "Those who enslave others, inevitably become slaves themselves.",
+    "episodeTitle": "Slaves of the Republic",
+    "season": 4,
+    "episode": 12,
+    "arc": "Zygerrian Slavers"
+  },
+  {
+    "text": "Great hope can come from small sacrifices.",
+    "episodeTitle": "Escape from Kadavo",
+    "season": 4,
+    "episode": 13,
+    "arc": "Zygerrian Slavers"
+  },
+  {
+    "text": "Friendship shows us who we really are.",
+    "episodeTitle": "A Friend in Need",
+    "season": 4,
+    "episode": 14,
+    "arc": "A Friend in Need"
+  },
+  {
+    "text": "All warfare is based on deception.",
+    "episodeTitle": "Deception",
+    "season": 4,
+    "episode": 15,
+    "arc": "Bounty Hunter Deception"
+  },
+  {
+    "text": "Keep your friends close, but keep your enemies closer.",
+    "episodeTitle": "Friends and Enemies",
+    "season": 4,
+    "episode": 16,
+    "arc": "Bounty Hunter Deception"
+  },
+  {
+    "text": "The strong survive, the noble overcome.",
+    "episodeTitle": "The Box",
+    "season": 4,
+    "episode": 17,
+    "arc": "Bounty Hunter Deception"
+  },
+  {
+    "text": "Trust is the greatest of gifts, but it must be earned.",
+    "episodeTitle": "Crisis on Naboo",
+    "season": 4,
+    "episode": 18,
+    "arc": "Bounty Hunter Deception"
+  },
+  {
+    "text": "One must let go of the past to hold on to the future.",
+    "episodeTitle": "Massacre",
+    "season": 4,
+    "episode": 19,
+    "arc": "Massacre"
+  },
+  {
+    "text": "Who we are never changes, who we think we are does.",
+    "episodeTitle": "Bounty",
+    "season": 4,
+    "episode": 20,
+    "arc": "Bounty"
+  },
+  {
+    "text": "A fallen enemy may rise again, but the reconciled one is truly vanquished.",
+    "episodeTitle": "Brothers",
+    "season": 4,
+    "episode": 21,
+    "arc": "Darth Maul Returns"
+  },
+  {
+    "text": "The enemy of my enemy is my friend.",
+    "episodeTitle": "Revenge",
+    "season": 4,
+    "episode": 22,
+    "arc": "Darth Maul Returns"
+  },
+  {
+    "text": "Strength of character can defeat strength in numbers.",
+    "episodeTitle": "Revival",
+    "season": 5,
+    "episode": 1,
+    "arc": "Revival"
+  },
+  {
+    "text": "Fear is a malleable weapon.",
+    "episodeTitle": "A War on Two Fronts",
+    "season": 5,
+    "episode": 2,
+    "arc": "Onderon Rebellion"
+  },
+  {
+    "text": "To seek something is to believe in its possibility.",
+    "episodeTitle": "Front Runners",
+    "season": 5,
+    "episode": 3,
+    "arc": "Onderon Rebellion"
+  },
+  {
+    "text": "Struggles often begin and end with the truth.",
+    "episodeTitle": "The Soft War",
+    "season": 5,
+    "episode": 4,
+    "arc": "Onderon Rebellion"
+  },
+  {
+    "text": "Disobedience is a demand for change.",
+    "episodeTitle": "Tipping Points",
+    "season": 5,
+    "episode": 5,
+    "arc": "Onderon Rebellion"
+  },
+  {
+    "text": "He who faces himself, finds himself.",
+    "episodeTitle": "The Gathering",
+    "season": 5,
+    "episode": 6,
+    "arc": "Young Jedi"
+  },
+  {
+    "text": "The young are often underestimated.",
+    "episodeTitle": "A Test of Strength",
+    "season": 5,
+    "episode": 7,
+    "arc": "Young Jedi"
+  },
+  {
+    "text": "When we rescue others, we rescue ourselves.",
+    "episodeTitle": "Bound for Rescue",
+    "season": 5,
+    "episode": 8,
+    "arc": "Young Jedi"
+  },
+  {
+    "text": "Choose your enemies wisely, as they may be your last hope.",
+    "episodeTitle": "A Necessary Bond",
+    "season": 5,
+    "episode": 9,
+    "arc": "Young Jedi"
+  },
+  {
+    "text": "Humility is the only defense against humiliation.",
+    "episodeTitle": "Secret Weapons",
+    "season": 5,
+    "episode": 10,
+    "arc": "D-Squad"
+  },
+  {
+    "text": "When all seems hopeless, a true hero gives hope.",
+    "episodeTitle": "A Sunny Day in the Void",
+    "season": 5,
+    "episode": 11,
+    "arc": "D-Squad"
+  },
+  {
+    "text": "A soldier's most powerful weapon is courage.",
+    "episodeTitle": "Missing in Action",
+    "season": 5,
+    "episode": 12,
+    "arc": "D-Squad"
+  },
+  {
+    "text": "You must trust in others or success is impossible.",
+    "episodeTitle": "Point of No Return",
+    "season": 5,
+    "episode": 13,
+    "arc": "D-Squad"
+  },
+  {
+    "text": "One vision can have many interpretations.",
+    "episodeTitle": "Eminence",
+    "season": 5,
+    "episode": 14,
+    "arc": "Mandalore Conquest"
+  },
+  {
+    "text": "Alliances can stall true intentions.",
+    "episodeTitle": "Shades of Reason",
+    "season": 5,
+    "episode": 15,
+    "arc": "Mandalore Conquest"
+  },
+  {
+    "text": "Morality separates heroes from villains.",
+    "episodeTitle": "The Lawless",
+    "season": 5,
+    "episode": 16,
+    "arc": "Mandalore Conquest"
+  },
+  {
+    "text": "Sometimes even the smallest doubt can shake the greatest belief.",
+    "episodeTitle": "Sabotage",
+    "season": 5,
+    "episode": 17,
+    "arc": "Ahsoka's Trial"
+  },
+  {
+    "text": "Courage begins by trusting oneself.",
+    "episodeTitle": "The Jedi Who Knew Too Much",
+    "season": 5,
+    "episode": 18,
+    "arc": "Ahsoka's Trial"
+  },
+  {
+    "text": "Never become desperate enough to trust the untrustworthy.",
+    "episodeTitle": "To Catch a Jedi",
+    "season": 5,
+    "episode": 19,
+    "arc": "Ahsoka's Trial"
+  },
+  {
+    "text": "Never give up hope, no matter how dark things seem.",
+    "episodeTitle": "The Wrong Jedi",
+    "season": 5,
+    "episode": 20,
+    "arc": "Ahsoka's Trial"
+  },
+  {
+    "text": "The truth about yourself is always the hardest to accept.",
+    "episodeTitle": "The Unknown",
+    "season": 6,
+    "episode": 1,
+    "arc": "Clone Conspiracy"
+  },
+  {
+    "text": "The wise benefit from a second opinion.",
+    "episodeTitle": "Conspiracy",
+    "season": 6,
+    "episode": 2,
+    "arc": "Clone Conspiracy"
+  },
+  {
+    "text": "When in doubt, go to the source.",
+    "episodeTitle": "Fugitive",
+    "season": 6,
+    "episode": 3,
+    "arc": "Clone Conspiracy"
+  },
+  {
+    "text": "The popular belief isn't always the correct one.",
+    "episodeTitle": "Orders",
+    "season": 6,
+    "episode": 4,
+    "arc": "Clone Conspiracy"
+  },
+  {
+    "text": "To love, is to trust. To trust is to believe.",
+    "episodeTitle": "An Old Friend",
+    "season": 6,
+    "episode": 5,
+    "arc": "Clovis"
+  },
+  {
+    "text": "Jealousy is the path to chaos.",
+    "episodeTitle": "The Rise of Clovis",
+    "season": 6,
+    "episode": 6,
+    "arc": "Clovis"
+  },
+  {
+    "text": "Deceit is the weapon of greed.",
+    "episodeTitle": "Crisis at the Heart",
+    "season": 6,
+    "episode": 7,
+    "arc": "Clovis"
+  },
+  {
+    "text": "Without darkness there cannot be light.",
+    "episodeTitle": "The Disappeared, Part I",
+    "season": 6,
+    "episode": 8,
+    "arc": "The Disappeared"
+  },
+  {
+    "text": "Wisdom is born in fools as well as wise men.",
+    "episodeTitle": "The Disappeared, Part II",
+    "season": 6,
+    "episode": 9,
+    "arc": "The Disappeared"
+  },
+  {
+    "text": "What is lost is often found.",
+    "episodeTitle": "The Lost One",
+    "season": 6,
+    "episode": 10,
+    "arc": "The Lost One"
+  },
+  {
+    "text": "Madness can sometimes be the path to truth.",
+    "episodeTitle": "Voices",
+    "season": 6,
+    "episode": 11,
+    "arc": "Yoda's Journey"
+  },
+  {
+    "text": "Death is just the beginning.",
+    "episodeTitle": "Destiny",
+    "season": 6,
+    "episode": 12,
+    "arc": "Yoda's Journey"
+  },
+  {
+    "text": "Facing all that you fear will free you from yourself.",
+    "episodeTitle": "Sacrifice",
+    "season": 6,
+    "episode": 13,
+    "arc": "Yoda's Journey"
+  },
+  {
+    "text": "Embrace others for their differences, for that makes you whole.",
+    "episodeTitle": "The Bad Batch",
+    "season": 7,
+    "episode": 1,
+    "arc": "The Bad Batch"
+  },
+  {
+    "text": "The search for truth begins with belief.",
+    "episodeTitle": "A Distant Echo",
+    "season": 7,
+    "episode": 2,
+    "arc": "The Bad Batch"
+  },
+  {
+    "text": "Survival is one step on the path to living.",
+    "episodeTitle": "On the Wings of Keeradaks",
+    "season": 7,
+    "episode": 3,
+    "arc": "The Bad Batch"
+  },
+  {
+    "text": "Trust placed in another is trust earned.",
+    "episodeTitle": "Unfinished Business",
+    "season": 7,
+    "episode": 4,
+    "arc": "The Bad Batch"
+  },
+  {
+    "text": "If there is no path before you, create your own.",
+    "episodeTitle": "Gone with a Trace",
+    "season": 7,
+    "episode": 5,
+    "arc": "Martez Sisters"
+  },
+  {
+    "text": "Mistakes are valuable lessons often learned too late.",
+    "episodeTitle": "Deal No Deal",
+    "season": 7,
+    "episode": 6,
+    "arc": "Martez Sisters"
+  },
+  {
+    "text": "Who you were does not have to define who you are.",
+    "episodeTitle": "Dangerous Debt",
+    "season": 7,
+    "episode": 7,
+    "arc": "Martez Sisters"
+  },
+  {
+    "text": "You can change who you are, but you cannot run from yourself.",
+    "episodeTitle": "Together Again",
+    "season": 7,
+    "episode": 8,
+    "arc": "Martez Sisters"
   }
 ]

@@ -30,6 +30,17 @@ struct QuoteEntry: TimelineEntry {
 struct ColdOpenWidgetProvider: TimelineProvider {
     private static let shownTextsKey = "shownQuoteTexts"
 
+    // Scheduled auto-refresh (M3/P1): WidgetKit needs every entry's date
+    // known up front — it doesn't call back into the provider between
+    // entries firing — so getTimeline pre-computes a batch covering the
+    // next scheduledEntryCount * refreshInterval, then asks for a new
+    // batch via .atEnd. Actual firing is still subject to the OS's own
+    // background-refresh budget (see CLAUDE.md's non-functional
+    // constraints) — pre-computing several hours ahead is exactly what
+    // respecting that budget looks like, not a way around it.
+    private static let refreshInterval: TimeInterval = 4 * 60 * 60
+    private static let scheduledEntryCount = 6
+
     // Used if the corpus can't be loaded at all (missing/corrupt resource) —
     // the widget should never render fully empty.
     static let fallbackQuote = Quote(
@@ -49,11 +60,16 @@ struct ColdOpenWidgetProvider: TimelineProvider {
     }
 
     func getTimeline(in context: Context, completion: @escaping (Timeline<QuoteEntry>) -> Void) {
-        // Reload policy stays .never — there's no scheduled auto-refresh yet
-        // (that's P1/M3). Manual refresh is RefreshQuoteIntent below, which
-        // forces a new getTimeline call via WidgetCenter.reloadTimelines.
-        let entry = QuoteEntry(date: Date(), quote: Self.nextQuote())
-        completion(Timeline(entries: [entry], policy: .never))
+        let now = Date()
+        let entries = (0..<Self.scheduledEntryCount).map { index in
+            QuoteEntry(date: now.addingTimeInterval(Double(index) * Self.refreshInterval), quote: Self.nextQuote())
+        }
+        // .atEnd asks WidgetKit to call getTimeline again once the last
+        // entry's date has passed, continuing the schedule — manual
+        // refresh (RefreshQuoteIntent) still works the same way it did
+        // under .never: it forces an early getTimeline call, which
+        // regenerates a fresh batch starting from "now".
+        completion(Timeline(entries: entries, policy: .atEnd))
     }
 
     /// Draws the next no-repeat quote, persisting the "already shown" set

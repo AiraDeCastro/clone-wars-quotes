@@ -1,4 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  updatePeriodMillis: 14400000 (4 hours, matching the iOS widget's own
+  refresh interval). This is the platform's own lightweight periodic-
+  update mechanism (a floor of 30 minutes, silently clamped below that) -
+  deliberately not WorkManager, which is the recommended tool for data
+  that needs frequent/reliable refresh (weather, prices); a quote widget
+  doesn't, and CLAUDE.md's non-functional constraints say not to fight
+  the OS's own refresh budget just to force a tighter cadence than it
+  wants to give. GlanceAppWidgetReceiver handles the actual re-render on
+  each fire; no extra code needed here beyond this attribute.
+-->
 <appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
     android:minWidth="180dp"
     android:minHeight="110dp"
@@ -10,4 +21,4 @@
     android:widgetCategory="home_screen"
     android:previewLayout="@layout/widget_preview"
     android:description="@string/widget_description"
-    android:updatePeriodMillis="0" />
+    android:updatePeriodMillis="14400000" />

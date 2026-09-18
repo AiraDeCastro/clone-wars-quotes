@@ -61,15 +61,18 @@ Check items off as they land. Exit criteria for each milestone is listed at the 
 
 ## M2 — Sharing
 
-- [ ] Design the share card layout (themed background, quote in display face, attribution line, wordmark)
-- [ ] Implement on-device share card rendering — iOS (Core Graphics)
-- [ ] Implement on-device share card rendering — Android (Canvas)
-- [ ] Export share cards at 1080×1920 (Stories/Reels) and 1080×1080 (feed)
-- [ ] Wire iOS share sheet (`UIActivityViewController`) with pre-attached image
-- [ ] Wire Android share intent (`ACTION_SEND`, image MIME type) with pre-attached image
+- [x] Design the share card layout (themed background, quote in display face, attribution line, wordmark) — proposed 3 concepts as a [design canvas artifact](https://claude.ai/artifact/DHUFRCr2JjEoQp5cDF7Tdg) (Wipe Bar, Framed HUD, Starfield Minimal), same process as the app icon proposal. User picked **Starfield Minimal**: deep-navy ground, a handful of gold star flecks (same restrained count as the icon's own starfield), large serif quote, two-line attribution at the bottom.
+- [x] Implement on-device share card rendering — iOS ([ios/ColdOpen/ShareCardRenderer.swift](ios/ColdOpen/ShareCardRenderer.swift)) — uses `UIGraphicsImageRenderer`/`NSAttributedString` drawing (deliberately not raw CoreGraphics/CoreText, to stay on well-established, lower-risk APIs given there's no way to compile-check this). **Scoped to `#if os(iOS)`** — `ColdOpen/` is shared source with the `ColdOpenMac` target (see project.yml), and this file uses UIKit, which doesn't exist on macOS; a macOS-compatible version is a separate follow-on (below), not silently broken by omission. **Not wired to any UI trigger yet** — see the newly discovered share-sheet-flow task below. Unverified by any Swift toolchain.
+- [x] Implement on-device share card rendering — Android ([android/app/src/main/kotlin/com/coldopen/app/share/ShareCardRenderer.kt](android/app/src/main/kotlin/com/coldopen/app/share/ShareCardRenderer.kt)) — `android.graphics.Canvas`/`Bitmap`/`StaticLayout`, lives in `:app` (not `:core`) since `android.graphics` has no plain-JVM equivalent. Same "not wired to a trigger yet" and "unverified by any Kotlin toolchain" caveats as iOS.
+- [x] Export share cards at 1080×1920 (Stories/Reels) and 1080×1080 (feed) — both renderers take an explicit size parameter (`ShareCardSize.story`/`.square` on iOS, `ShareCardSize.STORY_*`/`SQUARE_*` on Android) and every layout metric is a fraction of that size, so both exports reuse the same drawing code rather than needing two separate implementations.
+- [ ] **(newly discovered)** Neither renderer is wired to anything yet — there's no UI path from "tap something" to "get the rendered image." The natural shape (widget tap → deep-link into the app → app renders and immediately presents the OS share sheet) is a real architecture decision this session didn't make, since it affects both the iOS `AppIntent`/Android `ActionCallback` refresh-button wiring already shipped and the widget's limited interactivity — needs to be picked deliberately, not bolted on.
+- [ ] **(newly discovered)** `ShareCardRenderer` on iOS is `#if os(iOS)`-gated; write a macOS-compatible version (plain CoreGraphics/CoreText, no UIKit) if/when M4's macOS parity work picks this up.
+- [ ] **(newly discovered)** Both renderers use system fonts (Georgia/serif for the quote, system sans/`sans-serif-condensed` for attribution) as stand-ins — the concept mockup used Spectral/Barlow Condensed (Google Fonts), which would need real font files bundled and licensed to actually ship. Ties into the already-tracked "verify custom font renders correctly" Android task above; add the same caveat for iOS.
+- [ ] Wire iOS share sheet (`UIActivityViewController`) with pre-attached image — blocked on the share-sheet-flow decision above
+- [ ] Wire Android share intent (`ACTION_SEND`, image MIME type) with pre-attached image — blocked on the share-sheet-flow decision above
 - [ ] Integrate Instagram Stories sticker/background API where available
 - [ ] Confirm fallback to generic OS share sheet for X, Facebook, Messages, WhatsApp
-- [ ] Add attribution text to every generated share card (non-negotiable — see CLAUDE.md)
+- [x] Add attribution text to every generated share card (non-negotiable — see CLAUDE.md) — both renderers always draw the two-line "Cold Open · Star Wars: The Clone Wars" / episode attribution; there's no code path that renders a card without it.
 
 **Exit criteria:** A quote can go from widget tap to a posted Instagram/X/Facebook story in under 10 seconds, on both platforms.
 

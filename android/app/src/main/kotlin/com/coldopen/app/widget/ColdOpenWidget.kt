@@ -8,11 +8,13 @@ import androidx.compose.ui.unit.sp
 import androidx.glance.GlanceId
 import androidx.glance.GlanceModifier
 import androidx.glance.action.ActionParameters
+import androidx.glance.action.actionParametersOf
 import androidx.glance.action.clickable
 import androidx.glance.appwidget.GlanceAppWidget
 import androidx.glance.appwidget.GlanceAppWidgetReceiver
 import androidx.glance.appwidget.action.ActionCallback
 import androidx.glance.appwidget.action.actionRunCallback
+import androidx.glance.appwidget.action.actionStartActivity
 import androidx.glance.appwidget.provideContent
 import androidx.glance.background
 import androidx.glance.layout.Alignment
@@ -25,6 +27,8 @@ import androidx.glance.text.FontWeight
 import androidx.glance.text.Text
 import androidx.glance.text.TextStyle
 import androidx.glance.unit.ColorProvider
+import com.coldopen.app.share.ShareActivity
+import com.coldopen.app.share.ShareIntentKeys
 import com.coldopen.core.Quote
 import com.coldopen.core.QuoteCorpus
 import com.coldopen.core.QuoteSelector
@@ -109,6 +113,24 @@ private fun ColdOpenWidgetContent(quote: Quote) {
                 text = "${quote.episodeTitle} · S${quote.season}E${quote.episode}",
                 style = TextStyle(color = ColorProvider(Color(0xFFB7C0D8)), fontSize = 11.sp),
                 modifier = GlanceModifier.defaultWeight(),
+            )
+            // Launches ShareActivity, which renders the card and hands off
+            // to the OS share sheet immediately — a widget's click handler
+            // can't present that UI itself. See ShareActivity's doc comment.
+            Text(
+                text = "Share",
+                style = TextStyle(color = ColorProvider(Color(0xFFB7C0D8)), fontSize = 11.sp),
+                modifier = GlanceModifier.clickable(
+                    onClick = actionStartActivity<ShareActivity>(
+                        actionParametersOf(
+                            ActionParameters.Key<String>(ShareIntentKeys.TEXT) to quote.text,
+                            ActionParameters.Key<String>(ShareIntentKeys.EPISODE_TITLE) to quote.episodeTitle,
+                            ActionParameters.Key<Int>(ShareIntentKeys.SEASON) to quote.season,
+                            ActionParameters.Key<Int>(ShareIntentKeys.EPISODE) to quote.episode,
+                            ActionParameters.Key<String>(ShareIntentKeys.ARC) to quote.arc,
+                        )
+                    ),
+                ),
             )
             Text(
                 text = "New quote",

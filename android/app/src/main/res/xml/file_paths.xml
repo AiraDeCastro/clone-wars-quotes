@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Exposes only the cache subdirectory ShareActivity writes rendered share
+  cards into (see ShareActivity.saveToShareableFile) — nothing else in the
+  app's storage is reachable through the FileProvider this declares.
+-->
+<paths xmlns:android="http://schemas.android.com/apk/res/android">
+    <cache-path name="share_cards" path="share_cards/" />
+</paths>

@@ -337,4 +337,15 @@ This repo enforces quality gates and a commit format via git hooks (husky) — s
 - Deliberately left "add user-facing cadence setting" as its own separate, still-open TASKS.md item rather than folding it in here — the fixed 4-hour default is a real working schedule, not a placeholder, but making it user-configurable needs actual settings UI in the companion app that doesn't exist yet.
 - Verification: checked both edited files for the raw-control-byte bug (clean), validated the edited XML as well-formed, confirmed brace/paren balance by hand.
 - Updated TASKS.md (checked off scheduled auto-refresh with the full per-platform explanation) and both `ios/README.md` and `android/README.md`'s Known Gaps.
+- Committed as `feat: implement scheduled auto-refresh on iOS and Android` (commit `e9f4df5`) and pushed to `origin/master` on request.
+
+**2026-09-18 (continued) — the companion app quote browser**
+
+- Asked again to pick the next task. Weighed the remaining M3 items — favorites/pin (has its own unresolved UI question: long-press vs. in-app, similar shape of ambiguity to the faction emblem), analytics instrumentation (picking a third-party SDK felt like a decision worth the user's sign-off, not something to just pick), and the companion browser (unambiguous scope, no design decision blocking it, and newly more valuable now that the corpus actually has 129 real quotes instead of 1) — and picked the browser specifically because it was the one with nothing left to resolve before writing code.
+- Replaced both platforms' placeholder single-quote screens with a real searchable list over the full corpus, filtering in-memory by episode title, arc, or the quote text itself — deliberately no fancier search/index structure, since 129 rows is trivial to filter directly on every keystroke.
+- **iOS** (`ContentView.swift`): `List` + `.searchable(text:)`, with `ContentUnavailableView` and its `.search(text:)` convenience (both iOS 17+, matching the deployment target exactly) for the error/empty/no-results states instead of hand-rolled placeholder text.
+- **Android** (`MainActivity.kt`): `LazyColumn` with an `OutlinedTextField` search box above it, same filter logic via `contains(ignoreCase = true)`.
+- Deliberately picked this over the other two remaining M3 items for a second reason beyond scope clarity: `List`/`.searchable`/`NavigationStack` and `LazyColumn`/`OutlinedTextField` are all long-established, extremely well-documented UI framework basics — meaningfully lower risk to write blind (no compiler) than this session's Glance/WidgetKit-specific work has been, so it was worth doing now while the corpus is fresh rather than saving it for "later, once a toolchain exists."
+- Verification: checked both new files for the raw-control-byte bug (clean), confirmed brace/paren balance by hand.
+- Updated TASKS.md (checked off the companion browser task) and both `ios/README.md` and `android/README.md`'s Known Gaps.
 - Not yet committed — pending review.

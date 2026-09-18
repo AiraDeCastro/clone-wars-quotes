@@ -100,11 +100,21 @@ struct ColdOpenWidgetView: View {
                     .foregroundStyle(.white)
                     .minimumScaleFactor(0.8)
                 Spacer(minLength: 4)
-                HStack {
+                HStack(spacing: 12) {
                     Text("\(quote.episodeTitle) · S\(quote.season)E\(quote.episode)")
                         .font(.caption2)
                         .foregroundStyle(.white.opacity(0.6))
                     Spacer()
+                    // Tapping this deep-links into the container app (via
+                    // ShareDeepLink), which renders the share card and
+                    // presents the OS share sheet immediately — a widget
+                    // extension can't present that UI itself. See
+                    // ColdOpenApp.swift's onOpenURL handler.
+                    Link(destination: ShareDeepLink.url(for: quote)) {
+                        Image(systemName: "square.and.arrow.up")
+                            .font(.caption2)
+                            .foregroundStyle(.white.opacity(0.6))
+                    }
                     Button(intent: RefreshQuoteIntent()) {
                         Image(systemName: "arrow.clockwise")
                             .font(.caption2)

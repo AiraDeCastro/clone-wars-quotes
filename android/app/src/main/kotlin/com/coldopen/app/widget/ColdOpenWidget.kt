@@ -3,15 +3,18 @@ package com.coldopen.app.widget
 import android.content.Context
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.glance.GlanceId
 import androidx.glance.GlanceModifier
+import androidx.glance.LocalSize
 import androidx.glance.action.ActionParameters
 import androidx.glance.action.actionParametersOf
 import androidx.glance.action.clickable
 import androidx.glance.appwidget.GlanceAppWidget
 import androidx.glance.appwidget.GlanceAppWidgetReceiver
+import androidx.glance.appwidget.SizeMode
 import androidx.glance.appwidget.action.ActionCallback
 import androidx.glance.appwidget.action.actionRunCallback
 import androidx.glance.appwidget.action.actionStartActivity
@@ -46,8 +49,16 @@ import com.coldopen.core.QuoteSelector
  * [GlanceAppWidget.update], which re-runs [provideGlance] and therefore
  * [loadRandomQuote] again, so the refresh logic doesn't need to be
  * duplicated in the action callback itself.
+ *
+ * [sizeMode] declares three responsive size buckets (small/medium/large,
+ * matching the three fixed WidgetKit families the iOS side supports) —
+ * Glance calls `provideGlance` once per bucket and [LocalSize] inside the
+ * composable reports which one is actually showing, so [ColdOpenWidgetContent]
+ * can scale typography/padding up for the large bucket rather than just
+ * stretching the same small layout into more space.
  */
 class ColdOpenWidget : GlanceAppWidget() {
+    override val sizeMode = SizeMode.Responsive(setOf(SmallSize, MediumSize, LargeSize))
 
     override suspend fun provideGlance(context: Context, id: GlanceId) {
         val quote = loadRandomQuote(context)
@@ -91,13 +102,25 @@ class ColdOpenWidget : GlanceAppWidget() {
     }
 }
 
+// Matches cold_open_widget_info.xml's minWidth/minHeight/maxResizeWidth/
+// maxResizeHeight — these are the three buckets Glance picks between via
+// SizeMode.Responsive, not just documentation of the XML bounds.
+private val SmallSize = DpSize(180.dp, 110.dp)
+private val MediumSize = DpSize(270.dp, 110.dp)
+private val LargeSize = DpSize(270.dp, 300.dp)
+
 @Composable
 private fun ColdOpenWidgetContent(quote: Quote) {
+    val size = LocalSize.current
+    val isLarge = size.height >= LargeSize.height
+    val quoteFontSize = if (isLarge) 20.sp else 15.sp
+    val attributionFontSize = if (isLarge) 13.sp else 11.sp
+
     Column(
         modifier = GlanceModifier
             .fillMaxSize()
             .background(Color(0xFF0D1116))
-            .padding(16.dp),
+            .padding(if (isLarge) 20.dp else 16.dp),
         verticalAlignment = Alignment.Vertical.CenterVertically,
     ) {
         Text(
@@ -105,13 +128,19 @@ private fun ColdOpenWidgetContent(quote: Quote) {
             style = TextStyle(
                 color = ColorProvider(Color.White),
                 fontWeight = FontWeight.Medium,
-                fontSize = 15.sp,
+                fontSize = quoteFontSize,
             ),
         )
+        // A faction emblem was considered for this size specifically (see
+        // CLAUDE.md's design direction: "at most one faction emblem, and
+        // only at the large widget size") but deliberately left out here —
+        // it needs both a design decision (which emblem, in what style) and
+        // a quote-to-faction mapping that doesn't exist in the schema yet.
+        // Tracked as its own TASKS.md item rather than guessed at.
         Row(modifier = GlanceModifier.fillMaxWidth()) {
             Text(
                 text = "${quote.episodeTitle} · S${quote.season}E${quote.episode}",
-                style = TextStyle(color = ColorProvider(Color(0xFFB7C0D8)), fontSize = 11.sp),
+                style = TextStyle(color = ColorProvider(Color(0xFFB7C0D8)), fontSize = attributionFontSize),
                 modifier = GlanceModifier.defaultWeight(),
             )
             // Launches ShareActivity, which renders the card and hands off
@@ -119,7 +148,7 @@ private fun ColdOpenWidgetContent(quote: Quote) {
             // can't present that UI itself. See ShareActivity's doc comment.
             Text(
                 text = "Share",
-                style = TextStyle(color = ColorProvider(Color(0xFFB7C0D8)), fontSize = 11.sp),
+                style = TextStyle(color = ColorProvider(Color(0xFFB7C0D8)), fontSize = attributionFontSize),
                 modifier = GlanceModifier.clickable(
                     onClick = actionStartActivity<ShareActivity>(
                         actionParametersOf(
@@ -134,7 +163,7 @@ private fun ColdOpenWidgetContent(quote: Quote) {
             )
             Text(
                 text = "New quote",
-                style = TextStyle(color = ColorProvider(Color(0xFFB7C0D8)), fontSize = 11.sp),
+                style = TextStyle(color = ColorProvider(Color(0xFFB7C0D8)), fontSize = attributionFontSize),
                 modifier = GlanceModifier.clickable(onClick = actionRunCallback<RefreshAction>()),
             )
         }

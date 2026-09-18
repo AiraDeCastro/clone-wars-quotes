@@ -91,18 +91,29 @@ struct RefreshQuoteIntent: AppIntent {
 
 struct ColdOpenWidgetView: View {
     let entry: QuoteEntry
+    @Environment(\.widgetFamily) private var family
+
+    private var isLarge: Bool { family == .systemLarge }
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 8) {
+        VStack(alignment: .leading, spacing: isLarge ? 16 : 8) {
             if let quote = entry.quote {
                 Text(quote.text)
-                    .font(.system(.body, design: .rounded).weight(.semibold))
+                    .font(isLarge ? .system(.title3, design: .rounded).weight(.semibold) : .system(.body, design: .rounded).weight(.semibold))
                     .foregroundStyle(.white)
                     .minimumScaleFactor(0.8)
+                // A faction emblem was considered for this size specifically
+                // (see CLAUDE.md's design direction: "at most one faction
+                // emblem, and only at the large widget size") but
+                // deliberately left out here — it needs both a design
+                // decision (which emblem, in what style) and a
+                // quote-to-faction mapping that doesn't exist in the schema
+                // yet. Tracked as its own TASKS.md item rather than
+                // guessed at.
                 Spacer(minLength: 4)
                 HStack(spacing: 12) {
                     Text("\(quote.episodeTitle) · S\(quote.season)E\(quote.episode)")
-                        .font(.caption2)
+                        .font(isLarge ? .caption : .caption2)
                         .foregroundStyle(.white.opacity(0.6))
                     Spacer()
                     // Tapping this deep-links into the container app (via
@@ -112,12 +123,12 @@ struct ColdOpenWidgetView: View {
                     // ColdOpenApp.swift's onOpenURL handler.
                     Link(destination: ShareDeepLink.url(for: quote)) {
                         Image(systemName: "square.and.arrow.up")
-                            .font(.caption2)
+                            .font(isLarge ? .caption : .caption2)
                             .foregroundStyle(.white.opacity(0.6))
                     }
                     Button(intent: RefreshQuoteIntent()) {
                         Image(systemName: "arrow.clockwise")
-                            .font(.caption2)
+                            .font(isLarge ? .caption : .caption2)
                             .foregroundStyle(.white.opacity(0.6))
                     }
                     .buttonStyle(.plain)
@@ -144,6 +155,6 @@ struct ColdOpenWidget: Widget {
         }
         .configurationDisplayName("Cold Open")
         .description("A random line from a Clone Wars cold open.")
-        .supportedFamilies([.systemSmall, .systemMedium])
+        .supportedFamilies([.systemSmall, .systemMedium, .systemLarge])
     }
 }

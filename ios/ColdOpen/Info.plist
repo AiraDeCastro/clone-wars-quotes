@@ -19,6 +19,12 @@
             </array>
         </dict>
     </array>
+    <key>LSApplicationQueriesSchemes</key>
+    <array>
+        <!-- Lets InstagramStorySharing.isAvailable check whether Instagram
+             is installed via canOpenURL, before attempting a Stories share. -->
+        <string>instagram-stories</string>
+    </array>
     <key>UILaunchScreen</key>
     <dict/>
     <key>UISupportedInterfaceOrientations</key>

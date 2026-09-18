@@ -30,6 +30,14 @@ struct ColdOpenApp: App {
         guard let quote = ShareDeepLink.quote(from: url) else { return }
         #if os(iOS)
         let image = ShareCardRenderer.render(quote: quote, size: ShareCardSize.story)
+        // Prefer sharing straight into Instagram Stories when it's genuinely
+        // available (see InstagramStorySharing's doc comment — it stays
+        // unavailable until a real Facebook App ID is registered), so this
+        // silently no-ops onto the generic share sheet below until then
+        // rather than needing a separate code path to enable later.
+        if InstagramStorySharing.share(image: image) {
+            return
+        }
         shareItems = [image]
         #endif
         // No macOS handling yet — ShareCardRenderer is iOS-only for now

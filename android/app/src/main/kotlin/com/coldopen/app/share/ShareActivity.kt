@@ -40,12 +40,18 @@ class ShareActivity : Activity() {
             return
         }
 
-        val sendIntent = Intent(Intent.ACTION_SEND).apply {
-            type = "image/png"
-            putExtra(Intent.EXTRA_STREAM, uri)
-            addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+        // Prefer sharing straight into Instagram Stories when it's
+        // genuinely available (see InstagramStorySharing's doc comment —
+        // it stays unavailable until a real Facebook App ID is
+        // registered), falling back to the generic share sheet otherwise.
+        if (!InstagramStorySharing.share(this, uri)) {
+            val sendIntent = Intent(Intent.ACTION_SEND).apply {
+                type = "image/png"
+                putExtra(Intent.EXTRA_STREAM, uri)
+                addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+            }
+            startActivity(Intent.createChooser(sendIntent, null))
         }
-        startActivity(Intent.createChooser(sendIntent, null))
         finish()
     }
 

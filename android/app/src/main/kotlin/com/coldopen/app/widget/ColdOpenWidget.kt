@@ -30,6 +30,7 @@ import androidx.glance.text.FontWeight
 import androidx.glance.text.Text
 import androidx.glance.text.TextStyle
 import androidx.glance.unit.ColorProvider
+import com.coldopen.app.FavoritesStore
 import com.coldopen.app.share.ShareActivity
 import com.coldopen.app.share.ShareIntentKeys
 import com.coldopen.core.Quote
@@ -78,9 +79,17 @@ class ColdOpenWidget : GlanceAppWidget() {
         }
         if (quotes.isEmpty()) return FALLBACK_QUOTE
 
+        // Favorited quotes (set via the companion browser) are excluded
+        // from the pool — unless every quote is favorited, in which case
+        // excluding them all would leave nothing to show, so the filter
+        // is skipped rather than falling back to the generic placeholder.
+        val favorites = FavoritesStore.favoriteTexts(context)
+        val nonFavoriteQuotes = quotes.filterNot { favorites.contains(it.text) }
+        val eligibleQuotes = nonFavoriteQuotes.ifEmpty { quotes }
+
         val prefs = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
         val alreadyShown = prefs.getStringSet(PREF_SHOWN_TEXTS, emptySet()) ?: emptySet()
-        val selector = QuoteSelector(quotes, alreadyShown = alreadyShown)
+        val selector = QuoteSelector(eligibleQuotes, alreadyShown = alreadyShown)
         val quote = selector.next() ?: return FALLBACK_QUOTE
         prefs.edit().putStringSet(PREF_SHOWN_TEXTS, selector.shownTexts).apply()
         return quote

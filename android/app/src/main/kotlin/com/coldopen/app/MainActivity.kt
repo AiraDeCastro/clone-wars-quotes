@@ -3,7 +3,9 @@ package com.coldopen.app
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -19,15 +21,20 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import com.coldopen.core.Quote
 import com.coldopen.core.QuoteCorpus
 
 /**
  * Companion quote browser (TASKS.md M3) — searchable by episode title,
- * arc, or the line itself. Loads the full corpus once; filtering is done
- * in-memory since 129 quotes is trivially small, no need for anything
- * fancier than a plain `contains(ignoreCase = true)`.
+ * arc, or the line itself, with a favorite toggle per row (the "in-app"
+ * option for TASKS.md M3's favorite/pin item — a widget long-press isn't
+ * really a custom action WidgetKit/Glance exposes). Loads the full corpus
+ * once; filtering is done in-memory since 129 quotes is trivially small,
+ * no need for anything fancier than a plain `contains(ignoreCase = true)`.
  */
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -48,7 +55,9 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 private fun ColdOpenBrowserScreen(quotes: List<Quote>) {
+    val context = LocalContext.current
     var query by remember { mutableStateOf("") }
+    var favoriteTexts by remember { mutableStateOf(FavoritesStore.favoriteTexts(context)) }
     val filtered = remember(quotes, query) {
         if (query.isBlank()) {
             quotes
@@ -73,7 +82,14 @@ private fun ColdOpenBrowserScreen(quotes: List<Quote>) {
             filtered.isEmpty() -> Text(text = "No quotes match \"$query\".", modifier = Modifier.padding(top = 24.dp))
             else -> LazyColumn {
                 items(filtered, key = { it.text }) { quote ->
-                    QuoteRow(quote)
+                    QuoteRow(
+                        quote = quote,
+                        isFavorite = favoriteTexts.contains(quote.text),
+                        onToggleFavorite = {
+                            FavoritesStore.toggleFavorite(context, quote)
+                            favoriteTexts = FavoritesStore.favoriteTexts(context)
+                        },
+                    )
                 }
             }
         }
@@ -81,12 +97,24 @@ private fun ColdOpenBrowserScreen(quotes: List<Quote>) {
 }
 
 @Composable
-private fun QuoteRow(quote: Quote) {
-    Column(modifier = Modifier.fillMaxWidth().padding(vertical = 12.dp)) {
-        Text(text = quote.text, style = MaterialTheme.typography.bodyLarge)
+private fun QuoteRow(quote: Quote, isFavorite: Boolean, onToggleFavorite: () -> Unit) {
+    Row(modifier = Modifier.fillMaxWidth().padding(vertical = 12.dp)) {
+        Column(modifier = Modifier.weight(1f)) {
+            Text(text = quote.text, style = MaterialTheme.typography.bodyLarge)
+            Text(
+                text = "${quote.episodeTitle} · S${quote.season}E${quote.episode} · ${quote.arc}",
+                style = MaterialTheme.typography.bodySmall,
+            )
+        }
         Text(
-            text = "${quote.episodeTitle} · S${quote.season}E${quote.episode} · ${quote.arc}",
-            style = MaterialTheme.typography.bodySmall,
+            text = if (isFavorite) "★" else "☆",
+            style = MaterialTheme.typography.titleLarge,
+            modifier = Modifier
+                .padding(start = 8.dp)
+                .clickable(onClick = onToggleFavorite)
+                .semantics {
+                    contentDescription = if (isFavorite) "Remove from favorites" else "Add to favorites"
+                },
         )
     }
 }

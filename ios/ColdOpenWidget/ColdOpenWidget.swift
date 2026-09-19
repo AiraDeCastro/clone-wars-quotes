@@ -3,25 +3,6 @@ import WidgetKit
 import SwiftUI
 import ColdOpenCore
 
-/// The App Group shared between this widget extension and the container
-/// app, used to persist `QuoteSelector`'s "already shown" set across
-/// timeline reloads (a WidgetKit extension process is short-lived and
-/// stateless between them otherwise).
-///
-/// **This identifier is not yet registered anywhere.** It follows the
-/// existing bundle ID scheme (`com.coldopen.app`/`com.coldopen.app.widget`)
-/// but actually enabling it requires an interactive step this scaffold
-/// can't complete: open Signing & Capabilities for `ColdOpenWidgetExtension`
-/// (and `ColdOpenWidgetExtensionMac`) in Xcode, add the "App Groups"
-/// capability, and register this exact identifier — tied to a real Apple
-/// ID/team, which is why it's not automated the way the corpus sync or the
-/// app icon were. Until that's done, `UserDefaults(suiteName:)` below
-/// returns `nil` and the widget falls back to un-persisted random
-/// selection rather than crashing — see `nextQuote()`.
-private enum WidgetAppGroup {
-    static let identifier = "group.com.coldopen.app"
-}
-
 struct QuoteEntry: TimelineEntry {
     let date: Date
     let quote: Quote?
@@ -74,15 +55,23 @@ struct ColdOpenWidgetProvider: TimelineProvider {
 
     /// Draws the next no-repeat quote, persisting the "already shown" set
     /// to the shared App Group suite (falling back to un-persisted random
-    /// selection if that suite isn't available — see `WidgetAppGroup`).
+    /// selection if that suite isn't available — see `AppGroup`'s doc
+    /// comment). Favorited quotes (set via the companion browser) are
+    /// excluded from the pool — unless every quote is favorited, in which
+    /// case excluding them all would leave nothing to show, so the filter
+    /// is skipped rather than falling back to the generic placeholder.
     private static func nextQuote() -> Quote {
         guard let quotes = try? QuoteCorpus.load(), !quotes.isEmpty else {
             return fallbackQuote
         }
 
-        let defaults = UserDefaults(suiteName: WidgetAppGroup.identifier)
+        let defaults = UserDefaults(suiteName: AppGroup.identifier)
+        let favorites = FavoritesStore(defaults: defaults).favoriteTexts
+        let nonFavoriteQuotes = quotes.filter { !favorites.contains($0.text) }
+        let eligibleQuotes = nonFavoriteQuotes.isEmpty ? quotes : nonFavoriteQuotes
+
         let alreadyShown = Set(defaults?.stringArray(forKey: shownTextsKey) ?? [])
-        let selector = QuoteSelector(quotes: quotes, alreadyShown: alreadyShown)
+        let selector = QuoteSelector(quotes: eligibleQuotes, alreadyShown: alreadyShown)
 
         guard let quote = selector.next() else {
             return fallbackQuote

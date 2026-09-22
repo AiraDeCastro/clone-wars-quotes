@@ -107,6 +107,14 @@ struct ColdOpenWidgetView: View {
                     .font(isLarge ? .system(.title3, design: .rounded).weight(.semibold) : .system(.body, design: .rounded).weight(.semibold))
                     .foregroundStyle(.white)
                     .minimumScaleFactor(0.8)
+                    // Non-functional constraint (CLAUDE.md): VoiceOver
+                    // should read quote + attribution as one label, not
+                    // two. This Text carries the combined spoken label;
+                    // the visual attribution Text below is hidden from
+                    // the accessibility tree so it isn't announced twice.
+                    .accessibilityLabel(
+                        "\(quote.text). \(quote.episodeTitle), season \(quote.season), episode \(quote.episode)."
+                    )
                 // A faction emblem was considered for this size specifically
                 // (see CLAUDE.md's design direction: "at most one faction
                 // emblem, and only at the large widget size") but
@@ -120,6 +128,7 @@ struct ColdOpenWidgetView: View {
                     Text("\(quote.episodeTitle) · S\(quote.season)E\(quote.episode)")
                         .font(isLarge ? .caption : .caption2)
                         .foregroundStyle(.white.opacity(0.6))
+                        .accessibilityHidden(true)
                     Spacer()
                     // Tapping this deep-links into the container app (via
                     // ShareDeepLink), which renders the share card and

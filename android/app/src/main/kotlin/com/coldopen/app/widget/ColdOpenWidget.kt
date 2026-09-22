@@ -26,6 +26,8 @@ import androidx.glance.layout.Row
 import androidx.glance.layout.fillMaxSize
 import androidx.glance.layout.fillMaxWidth
 import androidx.glance.layout.padding
+import androidx.glance.semantics.contentDescription
+import androidx.glance.semantics.semantics
 import androidx.glance.text.FontWeight
 import androidx.glance.text.Text
 import androidx.glance.text.TextStyle
@@ -139,6 +141,17 @@ private fun ColdOpenWidgetContent(quote: Quote) {
                 fontWeight = FontWeight.Medium,
                 fontSize = quoteFontSize,
             ),
+            // Non-functional constraint (CLAUDE.md): TalkBack should read
+            // quote + attribution as one label, not two. Unlike SwiftUI,
+            // Glance's semantics package (androidx.glance.semantics) only
+            // exposes contentDescription/testTag — no mergeDescendants or
+            // an accessibilityHidden equivalent to explicitly silence the
+            // visual attribution Text below, so this can't be verified as
+            // a clean single-announcement the way the iOS fix can.
+            modifier = GlanceModifier.semantics {
+                contentDescription =
+                    "${quote.text}. ${quote.episodeTitle}, season ${quote.season}, episode ${quote.episode}."
+            },
         )
         // A faction emblem was considered for this size specifically (see
         // CLAUDE.md's design direction: "at most one faction emblem, and
